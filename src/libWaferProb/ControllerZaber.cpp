@@ -76,8 +76,9 @@ int ControllerZaber::write(const string& cmd){
 }
 
 int ControllerZaber::convert_mm_to_turns(float value){
-    // still in unit of micro-steps!
-    return value;
+    // turns: 1952000 turns
+    // length: 305000 micro-meter 
+    return value / 0.15625; 
 }
 
 int ControllerZaber::set_home(){

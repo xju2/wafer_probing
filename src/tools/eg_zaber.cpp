@@ -12,6 +12,9 @@
 
 #include "za_serial.h"
 
+#include <string>
+#include <iostream>
+using namespace std;
 void poll_until_idle(z_port port)
 {
     char reply[256] = { 0 };
@@ -39,6 +42,16 @@ void poll_until_idle(z_port port)
     }
 }
 
+void send(z_port port, const char* cmd){
+	char reply[256] = { 0 };
+
+    za_send(port, cmd);
+    za_receive(port, reply, sizeof(reply));
+
+    printf("%s -> %s\n", cmd, reply);
+
+    poll_until_idle(port);
+}
 /* We take some shortcuts here in main() for the sake of demonstration and code
  * clarity, namely not checking every function's return value. Special care has
  * been taken in this API to provide meaningful return values, and we encourage
@@ -48,39 +61,30 @@ int main(int argc, char** argv)
     // give the port number
     if (argc < 2){
         printf("%s device_name\n", argv[0]);
+        printf("e.g: /dev/ttyACM0\n");
         return 1;
     }
     z_port port;
 	char reply[256] = { 0 };
-	// char *device_name = "/dev/ttyUSB0";
 	char *device_name = argv[1];
 
 	if (za_connect(&port, device_name) != Z_SUCCESS)
 	{
 		printf("Could not connect to device %s.\n", device_name);
 		return -1;
-	}
+	} else {
+        printf("%s is connected\n", device_name);
+    }
 
-    za_send(port, "/home\n");
-    za_receive(port, reply, sizeof(reply));
-	if (reply[0] == '\0')
-	{
-		printf("Read no reply from device %s. "
-				"It may be running at a different baud rate "
-				"and/or in the binary protocol.\n", device_name);
-		return -1;
-	}
-
-    poll_until_idle(port);
-
-	/* NB: The position 100,000 microsteps may be beyond the range of travel
-	 * of your device. This example was written for devices with a long
-	 * travel range, such as the A-LSQ450D. Adjust this number as necessary. */
-    za_send(port, "/move abs 100000\n");
-    za_receive(port, reply, sizeof(reply));
-
-    poll_until_idle(port);
-
+    string input = "";
+    while(true){
+        getline(cin, input);
+        if(input[0] == 'q') break;
+        if(input[0] == '\n') continue;
+        char cmd[256];
+        int n = sprintf(cmd, "%s\n", input.c_str());
+        send(port, cmd);
+    }
     za_disconnect(port);
 
     return 0;
