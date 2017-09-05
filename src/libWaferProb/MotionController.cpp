@@ -5,10 +5,10 @@
 #include <sstream>
 
 using namespace std;
-MotionController::MotionController():
+MotionController::MotionController(const char* dn_1):
     ControllerBase()
 {
-    xy_ctrl = new ControllerZaber("/dev/tty.usbmodem1411");
+    xy_ctrl = new ControllerZaber(dn_1);
 }
 
 MotionController::~MotionController(){
@@ -17,7 +17,7 @@ MotionController::~MotionController(){
 
 int MotionController::connect() {
     xy_ctrl->connect();
-    xy_ctrl->set_home();
+    // xy_ctrl->set_home();
 
     // connect z station
     /**
@@ -29,6 +29,13 @@ int MotionController::connect() {
 }
 
 int MotionController::disconnect(){
+    /** 
+     * dont' do that 
+     before disconnect, park the device.
+    if(xy_ctrl->park() == 0){
+        printf("%s is parked\n", xy_ctrl->device_name());
+    }
+    ***/
     xy_ctrl->disconnect();
     return 0;
 }
@@ -77,4 +84,12 @@ int MotionController::write(int axis, const string& cmd)
         xy_ctrl->write(cmd);
     }
     return 0;
+}
+
+int MotionController::set_home(){
+    xy_ctrl->set_home();
+}
+
+int MotionController::set_center(){
+    xy_ctrl->set_center();
 }

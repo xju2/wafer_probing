@@ -29,6 +29,9 @@ public:
 
     virtual int get_position(int axis) = 0; // report current position
 
+    virtual int set_home() = 0;
+    virtual int set_center() = 0;
+
     virtual int write(const string& cmd) = 0; // send command to device
 };
 #endif

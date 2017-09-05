@@ -32,7 +32,6 @@ public:
     void print_cmd();
 
 private:
-    bool is_supported(const string& action) const;
     int axis_number(const string& axis_str) const;
 };
 

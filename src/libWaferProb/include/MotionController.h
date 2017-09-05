@@ -17,7 +17,7 @@ private:
     GCon z_ctrl;    // z-axis controled by a machine from Garlil
 
 public:
-    MotionController();
+    MotionController(const char* dn_1);
     ~MotionController();
 
     int connect();
@@ -29,6 +29,9 @@ public:
     int mv_rel(int axis, float value); // move w.r.t current-position
 
     int get_position(int axis);
+
+    int set_home();
+    int set_center();
 
     int write(const string& cmd){
         // sorry I don't know which device cmd writes to...
