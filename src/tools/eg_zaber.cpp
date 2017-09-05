@@ -59,20 +59,13 @@ void send(z_port port, const char* cmd){
 int main(int argc, char** argv)
 {
     // give the port number
-    if (argc < 1){
+    if (argc < 2){
         printf("%s device_name\n", argv[0]);
-        printf("e.g: /dev/ttyACM0\n");
+        printf("e.g: /dev/ttyACM0, /dev/tty.usbmodem1411\n");
         return 1;
     }
     z_port port;
-	char reply[256] = { 0 };
-<<<<<<< HEAD:src/tools/eg_zaber.c
-	// char *device_name = "/dev/ttyUSB0";
-	char *device_name = "/dev/tty.usbmodem1411";
-	// char *device_name = argv[1];
-=======
 	char *device_name = argv[1];
->>>>>>> bdc3f30f120fe00c278b45d37611e949e917db03:src/tools/eg_zaber.cpp
 
 	if (za_connect(&port, device_name) != Z_SUCCESS)
 	{
