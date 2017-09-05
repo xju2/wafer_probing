@@ -12,10 +12,10 @@ int main(int argc, char** argv){
     handle->print_cmd();
     string input = "";
     while(true){
-        cout << "Please enter commands, q for quit" << endl;
+        cout << "Please enter commands, Q for quit" << endl;
         getline(cin, input);
         // cout <<"You entered: " << input << endl;
-        if(input[0] == 'q') break;
+        if(input[0] == 'Q') break;
         if(input[0] == '\n') continue;
         handle->write(input);
     }
