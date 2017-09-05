@@ -8,7 +8,7 @@ using namespace std;
 MotionController::MotionController():
     ControllerBase()
 {
-    xy_ctrl = new ControllerZaber("/dev/ttyACM0");
+    xy_ctrl = new ControllerZaber("/dev/tty.usbmodem1411");
 }
 
 MotionController::~MotionController(){
@@ -17,6 +17,7 @@ MotionController::~MotionController(){
 
 int MotionController::connect() {
     xy_ctrl->connect();
+    xy_ctrl->set_home();
 
     // connect z station
     /**

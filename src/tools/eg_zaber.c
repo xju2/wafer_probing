@@ -46,14 +46,15 @@ void poll_until_idle(z_port port)
 int main(int argc, char** argv)
 {
     // give the port number
-    if (argc < 2){
+    if (argc < 1){
         printf("%s device_name\n", argv[0]);
         return 1;
     }
     z_port port;
 	char reply[256] = { 0 };
 	// char *device_name = "/dev/ttyUSB0";
-	char *device_name = argv[1];
+	char *device_name = "/dev/tty.usbmodem1411";
+	// char *device_name = argv[1];
 
 	if (za_connect(&port, device_name) != Z_SUCCESS)
 	{

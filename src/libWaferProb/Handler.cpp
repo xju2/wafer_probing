@@ -7,6 +7,7 @@
 
 Handler::Handler(){
     ctrl = new MotionController();
+    ctrl->connect();
 
     supported_actions = new vector<string>();
     /** To be deleted
@@ -21,6 +22,7 @@ Handler::Handler(){
 }
 
 Handler::~Handler(){
+    ctrl->disconnect();
     delete ctrl;
     delete supported_actions;
 }
