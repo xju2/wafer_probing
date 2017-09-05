@@ -27,6 +27,9 @@ Handler::~Handler(){
 
 
 void Handler::write(const string& cmd) {
+    if(cmd.empty()){
+        return;
+    }
     vector<string> items;
     WaferProb::tokenizeString(cmd, ' ', items);
     const string& action(items[0]);
@@ -50,7 +53,7 @@ void Handler::write(const string& cmd) {
         ctrl->mv_rel(axis, atof(items[2].c_str()));
     } else {
         printf("%s not supported yet!\n", action.c_str());
-        print_cmd();
+        // print_cmd();
     }
 }
 
