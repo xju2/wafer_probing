@@ -71,8 +71,8 @@ void Handler::print_cmd(){
 }
 
 bool Handler::is_supported(const string& action) const {
-    auto itr_sa = supported_actions->begin();
-    auto end_sa = supported_actions->begin();
+    vector<string>::iterator itr_sa = supported_actions->begin();
+    vector<string>::iterator end_sa = supported_actions->begin();
     bool results = false;
     for(; itr_sa != end_sa; itr_sa){
         if( *itr_sa == action){
