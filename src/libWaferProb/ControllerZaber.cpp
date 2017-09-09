@@ -75,7 +75,19 @@ int ControllerZaber::set_center(){
 }
 
 int ControllerZaber::park(){
-    return write("/tools parking park\n");
+    int status = write("/tools parking park\n");
+    if(status == 0){
+        printf("%s is parked\n", dn.c_str());
+    }
+    return status; 
+}
+
+int ControllerZaber::unpark(){
+    int status = write("/tools parking unpark\n");
+    if(status == 0){
+        printf("%s is unparked\n", dn.c_str());
+    }
+    return status;
 }
 
 int ControllerZaber::write(const string& cmd)

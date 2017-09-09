@@ -38,8 +38,10 @@ public: // implement controller's interface
     const char* device_name();
 
 public:
-    // park the device: lock it so that when powered up, don't need to homed.
+    // park the device: lock it so that when powered up, 
+    // don't need to homed.
     int park(); 
+    int unpark(); 
 
 private:
     // convert mili-meter to number of turns/steps

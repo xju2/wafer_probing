@@ -36,9 +36,9 @@ int Handler::axis_number(const string& axis_str) const {
 }
 
 void Handler::print_cmd(){
-    printf("MA X 10  --> move X-axis w.r.t home position 10 micro-meter\n"
-            "MR X 10 --> move X-axis w.r.t current position 10 micro-meter\n"
-            "SP X 10  --> set speed in x-axis direction by 10 micro-meter/s\n"
+    printf("MA X 10  --> move X-axis w.r.t home position 10 millimeter\n"
+            "MR X 10 --> move X-axis w.r.t current position 10 millimeter\n"
+            "SP X 10  --> set speed in x-axis direction by 10 millimeter/s\n"
             "SH --> move to HOME\n"
             "SM --> move to center\n"
             "SZC --> set needles contact with chip\n"
@@ -51,6 +51,7 @@ void Handler::print_cmd(){
 }
 
 void Handler::write(const string& cmd) {
+    float unit_scale = 1000.;
     if(cmd.empty()){
         return;
     }
@@ -67,7 +68,7 @@ void Handler::write(const string& cmd) {
             return;
         }
         int axis = axis_number(items[1]);
-        ctrl->mv_abs(axis, atof(items[2].c_str()));
+        ctrl->mv_abs(axis, unit_scale * atof(items[2].c_str()));
     } else if (action == "MR")
     {
         if(items.size() != 3){
@@ -76,7 +77,7 @@ void Handler::write(const string& cmd) {
             return;
         }
         int axis = axis_number(items[1]);
-        ctrl->mv_rel(axis, atof(items[2].c_str()));
+        ctrl->mv_rel(axis, unit_scale * atof(items[2].c_str()));
     } else if (action == "SH")
     {
         ctrl->set_home();
@@ -91,7 +92,7 @@ void Handler::write(const string& cmd) {
             return;
         }
         int axis = axis_number(items[1]);
-        ctrl->set_speed(axis, atof(items[2].c_str()));
+        ctrl->set_speed(axis, unit_scale * atof(items[2].c_str()));
     } else {
         printf("%s not supported yet!\n", action.c_str());
         // print_cmd();

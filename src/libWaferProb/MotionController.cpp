@@ -17,6 +17,7 @@ MotionController::~MotionController(){
 
 int MotionController::connect() {
     xy_ctrl->connect();
+    xy_ctrl->unpark();
     // xy_ctrl->set_home();
 
     // connect z station
@@ -29,13 +30,8 @@ int MotionController::connect() {
 }
 
 int MotionController::disconnect(){
-    /** 
-     * dont' do that 
-     before disconnect, park the device.
-    if(xy_ctrl->park() == 0){
-        printf("%s is parked\n", xy_ctrl->device_name());
-    }
-    ***/
+    // before disconnect, park the device.
+    xy_ctrl->park();
     xy_ctrl->disconnect();
     return 0;
 }

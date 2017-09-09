@@ -77,6 +77,7 @@ int main(int argc, char** argv)
 
     string input = "";
     while(true){
+        printf("please enter commands, q for quit\n");
         getline(cin, input);
         if(input[0] == 'q') break;
         if(input[0] == '\n') continue;
