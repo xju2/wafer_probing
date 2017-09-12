@@ -8,6 +8,7 @@ using namespace std;
 
 namespace WaferProb{
     void tokenizeString(const string& str, char delim, vector<string>& tokens);
+    string toUpper(const string& str);
 }
 
 #endif

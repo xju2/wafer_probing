@@ -55,8 +55,15 @@ void Handler::write(const string& cmd) {
     if(cmd.empty()){
         return;
     }
+    vector<string> raw_items;
+    WaferProb::tokenizeString(cmd, ' ', raw_items);
+   
     vector<string> items;
-    WaferProb::tokenizeString(cmd, ' ', items);
+    // convert commands to uppercase
+    for(int i = 0; i < (int) raw_items.size(); i++)
+    {
+        items.push_back(WaferProb::toUpper(raw_items[i])); 
+    }
     const string& action(items[0]);
 
     // Check each case..
