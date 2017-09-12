@@ -4,6 +4,7 @@
 #include <vector>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>  // for sleep()
 
 Handler::Handler(){
     ctrl = new MotionController("/dev/ttyACM0");
@@ -44,6 +45,7 @@ void Handler::print_cmd(){
             "SZC --> set needles contact with chip\n"
             "SZS --> set needles separate from chip\n"
             "SZD 10 --> set distance in z-axis in order to separate needle and chip.\n"
+            "TESTX --> move x from 0 to 305 with pre-defined steps\n"
             "----------------------------------------------------------\n"
             // "MVC X P --> move to positive x-axis direction, continuously\n" 
             // "MVC X N --> move to negative x-axis direction, continuously\n"  
@@ -60,12 +62,11 @@ void Handler::write(const string& cmd) {
    
     vector<string> items;
     // convert commands to uppercase
-    for(int i = 0; i < (int) raw_items.size(); i++)
-    {
-        items.push_back(WaferProb::toUpper(raw_items[i])); 
+    for(auto& item: raw_items){
+        items.push_back(WaferProb::toUpper(item)); 
     }
-    const string& action(items[0]);
 
+    const string& action(items[0]);
     // Check each case..
     if (action == "MA")
     {
@@ -100,6 +101,13 @@ void Handler::write(const string& cmd) {
         }
         int axis = axis_number(items[1]);
         ctrl->set_speed(axis, unit_scale * atof(items[2].c_str()));
+    }else if (action == "TESTX"){
+        vector<int> steps{20, 46, 73, 100, 126, 152, 179, 206, 226};
+        int axis = axis_number("X");
+        for(int step : steps){
+            ctrl->mv_abs(axis, unit_scale * step);
+            sleep(10);
+        }
     } else {
         printf("%s not supported yet!\n", action.c_str());
         // print_cmd();
