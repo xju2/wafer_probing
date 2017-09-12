@@ -101,9 +101,14 @@ void Handler::write(const string& cmd) {
         }
         int axis = axis_number(items[1]);
         ctrl->set_speed(axis, unit_scale * atof(items[2].c_str()));
-    }else if (action == "TESTX"){
+    }else if (action == "TEST"){
         vector<int> steps{20, 46, 73, 100, 126, 152, 179, 206, 226};
-        int axis = axis_number("X");
+        if (items.size() != 2){
+            printf("argument of TEST is wrong\n"
+                    "TEST X/Y \n");
+            return;
+        }
+        int axis = axis_number(items[1]);
         for(int step : steps){
             ctrl->mv_abs(axis, unit_scale * step);
             sleep(10);
