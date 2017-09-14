@@ -120,6 +120,7 @@ void ControllerZaber::poll_until_idle(){
 	 * sorting them into the fields of a za_reply struct, then we test
 	 * the device_status field. Possible values for device_status are "IDLE"
 	 * and "BUSY". */
+     int count = 0;
     for(;;)
     {
         za_send(port, "/\n");
@@ -134,6 +135,7 @@ void ControllerZaber::poll_until_idle(){
 		{
 			break;
 		}
+        if (count > 1000){break;} else{count ++;}
     }
 }
 
