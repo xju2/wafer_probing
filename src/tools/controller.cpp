@@ -15,7 +15,7 @@ int main(int argc, char** argv){
         cout << "Please enter commands, Q for quit" << endl;
         getline(cin, input);
         // cout <<"You entered: " << input << endl;
-        if(input[0] == 'Q') break;
+        if(input[0] == 'Q' || input[0] == 'q') break;
         if(input[0] == '\n') continue;
         handle->write(input);
     }
