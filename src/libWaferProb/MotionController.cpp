@@ -83,9 +83,9 @@ int MotionController::write(int axis, const string& cmd)
 }
 
 int MotionController::set_home(){
-    xy_ctrl->set_home();
+    return xy_ctrl->set_home();
 }
 
 int MotionController::set_center(){
-    xy_ctrl->set_center();
+    return xy_ctrl->set_center();
 }

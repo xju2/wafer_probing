@@ -30,9 +30,6 @@ public:
     ~Handler();
     void write(const string& cmd);
     void print_cmd();
-
-private:
-    int axis_number(const string& axis_str) const;
 };
 
 #endif

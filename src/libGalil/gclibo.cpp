@@ -254,7 +254,7 @@ GReturn GCALL GProgramDownloadFile(GCon g, GCStringIn file_path, GCStringIn prep
 	if (file_size) //don't malloc 0.
 	{
 
-		if (!(program_buffer = malloc(file_size + 1))) //allocate memory for the data, +1 for null termination below
+		if (!(program_buffer = (char*) malloc(file_size + 1))) //allocate memory for the data, +1 for null termination below
 		{
 			fclose(file);
 			return G_BAD_FULL_MEMORY;
@@ -270,7 +270,7 @@ GReturn GCALL GProgramDownloadFile(GCon g, GCStringIn file_path, GCStringIn prep
 	}
 	else
 	{
-		program_buffer = ""; //nullstring
+		program_buffer = (char*) ""; //nullstring
 	}
 
 	fclose(file); //done with file, close it
@@ -290,7 +290,7 @@ GReturn GCALL GProgramUploadFile(GCon g, GCStringIn file_path)
 	if (!(file = fopen(file_path, "wb"))) //open file for writing, binary mode
 		return G_BAD_FILE;
 
-	if (!(program_buffer = malloc(MAXPROG))) //allocate memory for the data
+	if (!(program_buffer = (char* )malloc(MAXPROG))) //allocate memory for the data
 	{
 		fclose(file);
 		return G_BAD_FULL_MEMORY;
@@ -311,7 +311,7 @@ GReturn GCALL GProgramUploadFile(GCon g, GCStringIn file_path)
 
 void GCALL GError(GReturn rc, GCStringOut error, GSize error_len)
 {
-	char* error_message;
+	char const * error_message;
 
 	switch (rc)
 	{

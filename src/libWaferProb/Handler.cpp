@@ -16,26 +16,6 @@ Handler::~Handler(){
     delete ctrl;
 }
 
-
-int Handler::axis_number(const string& axis_str) const {
-    // need to do better than this!
-    int axis = -1;
-    if(axis_str == "X" or axis_str == "x") {
-        axis = 0;
-    }
-    if(axis_str == "Y" or axis_str == "y") {
-        axis = 1;
-    }
-    if(axis_str == "Z" or axis_str == "z") {
-        axis = 2;
-    }
-    if (axis < 0) {
-        printf("Axis is wrong. Use X instead.");
-        axis = 0;
-    }
-    return axis;
-}
-
 void Handler::print_cmd(){
     printf("MA X 10  --> move X-axis w.r.t home position 10 millimeter\n"
             "MR X 10 --> move X-axis w.r.t current position 10 millimeter\n"
@@ -59,7 +39,7 @@ void Handler::write(const string& cmd) {
     }
     vector<string> raw_items;
     WaferProb::tokenizeString(cmd, ' ', raw_items);
-   
+
     vector<string> items;
     // convert commands to uppercase
     for(auto& item: raw_items){
@@ -75,7 +55,7 @@ void Handler::write(const string& cmd) {
                     "MA X/Y/Z 10\n");
             return;
         }
-        int axis = axis_number(items[1]);
+        int axis = WaferProb::axis_number(items[1]);
         ctrl->mv_abs(axis, unit_scale * atof(items[2].c_str()));
     } else if (action == "MR")
     {
@@ -84,7 +64,7 @@ void Handler::write(const string& cmd) {
                     "MR X/Y/Z 10\n");
             return;
         }
-        int axis = axis_number(items[1]);
+        int axis = WaferProb::axis_number(items[1]);
         ctrl->mv_rel(axis, unit_scale * atof(items[2].c_str()));
     } else if (action == "SH")
     {
@@ -99,7 +79,7 @@ void Handler::write(const string& cmd) {
                     "SP X/Y/Z 10000\n");
             return;
         }
-        int axis = axis_number(items[1]);
+        int axis = WaferProb::axis_number(items[1]);
         ctrl->set_speed(axis, unit_scale * atof(items[2].c_str()));
     }else if (action == "TEST"){
         vector<int> steps{20, 46, 73, 100, 126, 152, 179, 206, 226};
@@ -108,7 +88,7 @@ void Handler::write(const string& cmd) {
                     "TEST X/Y \n");
             return;
         }
-        int axis = axis_number(items[1]);
+        int axis = WaferProb::axis_number(items[1]);
         for(int step : steps){
             ctrl->mv_abs(axis, unit_scale * step);
             sleep(10);

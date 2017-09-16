@@ -34,6 +34,7 @@ int ControllerZaber::disconnect(){
         za_disconnect(port);
         port = -1;
     }
+    return 0;
 }
 
 int ControllerZaber::set_speed(int axis, float value)
@@ -82,7 +83,8 @@ int ControllerZaber::park(){
     return status; 
 }
 
-int ControllerZaber::unpark(){
+int ControllerZaber::unpark()
+{
     int status = write("/tools parking unpark\n");
     if(status == 0){
         printf("%s is unparked\n", dn.c_str());

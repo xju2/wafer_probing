@@ -52,7 +52,7 @@ GReturn H_AddArray(ArrayNode* head, char* name, char* data)
 		node = head;
 	else
 	{
-		node = malloc(sizeof(ArrayNode));
+		node = (ArrayNode*) malloc(sizeof(ArrayNode));
 		if (node) //malloc ok
 			H_InitArrayNode(node);
 		else
@@ -86,7 +86,7 @@ GReturn H_UploadArrayToList(GCon g, ArrayNode* head, char* name)
 {
 	GReturn rc = G_NO_ERROR; //return code
 	char* array_buf; //buffer to hold array as it's uploaded
-	if (!(array_buf = malloc(MAXARRAY))) //allocate memory for single array upload
+	if (!(array_buf = (char*) malloc(MAXARRAY))) //allocate memory for single array upload
 		return G_BAD_FULL_MEMORY;
 
 	if ((rc = GArrayUpload(g, name, G_BOUNDS, G_BOUNDS, G_CR, array_buf, MAXARRAY)) != G_NO_ERROR) //get this array's data
@@ -99,7 +99,7 @@ GReturn H_UploadArrayToList(GCon g, ArrayNode* head, char* name)
 GReturn H_CreateArrayNode(ArrayNode* head, char* name)
 {
 	char* array_buf; //buffer to hold array data
-	if (!(array_buf = malloc(MAXARRAY))) //allocate memory for single array upload
+	if (!(array_buf = (char*) malloc(MAXARRAY))) //allocate memory for single array upload
 		return G_BAD_FULL_MEMORY;
 	array_buf[0] = 0; //null terminate so len is correct when added
 	return H_AddArray(head, name, array_buf); //push the data into the array linked list
