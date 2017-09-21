@@ -16,7 +16,9 @@ MotionController::~MotionController(){
 }
 
 int MotionController::connect() {
-    xy_ctrl->connect();
+    if(xy_ctrl->connect() != 0){ 
+        return 1;
+    }
     xy_ctrl->unpark();
     // xy_ctrl->set_home();
 
