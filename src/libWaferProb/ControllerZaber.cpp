@@ -1,7 +1,11 @@
 #include <stdio.h>
 #include <string.h>
+#include <vector>
+#include <stdlib.h>
 
 #include "ControllerZaber.h"
+#include "Helper.h"
+
 
 using namespace std;
 
@@ -10,6 +14,7 @@ ControllerZaber::ControllerZaber(const char* device_name):
     dn(device_name)
 {
     port = -1;
+    m_position[0] = m_position[1] = DEFAULT_ZABER_POS;
 }
 
 int ControllerZaber::connect(){
@@ -37,6 +42,36 @@ int ControllerZaber::disconnect(){
     return 0;
 }
 
+int ControllerZaber::write(const string& cmd)
+{
+    if (port < 0){
+        printf("%s is not open!", dn.c_str());
+        return -1;
+    }
+    za_send(port, cmd.c_str());
+    char reply[256] = {0};
+    za_receive(port, reply, sizeof(reply));
+    printf("%s -> %s\n", cmd.c_str(), reply);
+
+    poll_until_idle();
+    return 0;
+}
+
+char* ControllerZaber::write_with_reply(const string& cmd)
+{
+    char* reply = new char[255];
+    if (port < 0){
+        printf("%s is not open!", dn.c_str());
+        return NULL;
+    }
+    za_send(port, cmd.c_str());
+    za_receive(port, reply, sizeof(reply));
+    printf("%s -> %s\n", cmd.c_str(), reply);
+
+    poll_until_idle();
+    return reply;
+}
+
 int ControllerZaber::set_speed(int axis, float value)
 {
     int steps = convert_mm_to_turns(value);
@@ -59,10 +94,39 @@ int ControllerZaber::mv_rel(int axis, float value){
     return write(cmd);
 }
 
-int ControllerZaber::get_position(int axis){
+int ControllerZaber::get_position()
+{
     char cmd[256];
-    int n = sprintf(cmd, "/1 %d get  pos\n", axis);
-    return write(cmd);
+    int n = sprintf(cmd, "/1 get pos\n");
+    char* rpy_char = write_with_reply(cmd);
+    if (rpy_char == NULL){
+        m_position[0] = m_position[1] = DEFAULT_ZABER_POS;
+        return 0;
+    }
+
+    string rpy(rpy_char);
+
+    // analyze the reply.
+	struct za_reply decoded_reply;
+    za_decode(&decoded_reply, const_cast<char*>(rpy.c_str()));
+    //  analyze response data.
+    if(strncmp(decoded_reply.response_data, "BADDATA", 7) == 0){
+        m_position[0] = m_position[1] = DEFAULT_ZABER_POS;
+    } else {
+        string data(decoded_reply.response_data);
+        vector<string> raw_items;
+        WaferProb::tokenizeString(data, ' ', raw_items);
+        for(int i = 0; i < (int) raw_items.size(); i++){
+            m_position[i] = atof(raw_items.at(i).c_str());
+        }
+    }
+    return 0;
+}
+
+int ControllerZaber::get_position(int axis)
+{
+    get_position();
+    return m_position[axis];
 }
 
 
@@ -92,20 +156,6 @@ int ControllerZaber::unpark()
     return status;
 }
 
-int ControllerZaber::write(const string& cmd)
-{
-    if (port < 0){
-        printf("%s is not open!", dn.c_str());
-        return -1;
-    }
-    za_send(port, cmd.c_str());
-    char reply[256] = {0};
-    za_receive(port, reply, sizeof(reply));
-    printf("%s-> %s\n", cmd.c_str(), reply);
-
-    poll_until_idle();
-    return 0;
-}
 
 int ControllerZaber::convert_mm_to_turns(float value){
     // turns: 1952000 turns

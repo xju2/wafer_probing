@@ -17,6 +17,9 @@ private:
     GCon z_ctrl;    // z-axis controled by a machine from Garlil
 
 public:
+    float m_position[3];
+
+public:
     MotionController(const char* dn_1);
     ~MotionController();
 
@@ -29,6 +32,7 @@ public:
     int mv_rel(int axis, float value); // move w.r.t current-position
 
     int get_position(int axis);
+    int get_position();
 
     int set_home();
     int set_center();

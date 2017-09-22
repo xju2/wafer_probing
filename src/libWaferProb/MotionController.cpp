@@ -9,6 +9,7 @@ MotionController::MotionController(const char* dn_1):
     ControllerBase()
 {
     xy_ctrl = new ControllerZaber(dn_1);
+    m_position[0] = m_position[1] = -2;
 }
 
 MotionController::~MotionController(){
@@ -69,13 +70,18 @@ int MotionController::mv_rel(int axis, float value) {
     return 0;
 }
 
-int MotionController::get_position(int axis){
-    if(axis == 0 || axis == 1){
-        xy_ctrl->get_position(axis+1);
-    } else if (axis == 2) {
-    } else {}
+int MotionController::get_position(){
+    xy_ctrl->get_position();
+    m_position[0] = xy_ctrl->m_position[0];
+    m_position[1] = xy_ctrl->m_position[1];
     return 0;
 }
+
+int MotionController::get_position(int axis){
+    get_position();
+    return m_position[axis];
+}
+
 int MotionController::write(int axis, const string& cmd) 
 {
     if(axis == 0 || axis == 1){

@@ -11,10 +11,14 @@
 #include "ControllerBase.h"
 
 using namespace std;
-class ControllerZaber : public ControllerBase{
+class ControllerZaber : public ControllerBase
+{
 private:
     z_port port; //port connected to Zaber
     string dn; // device name
+
+public:
+    float m_position[2]; // make it public, easy to access.
 
 public: // implement controller's interface
     ControllerZaber(const char* device_name);
@@ -23,18 +27,22 @@ public: // implement controller's interface
     int connect();
     int disconnect();
 
+    char* write_with_reply(const string& cmd);
+
+    int write(const string& cmd);
+
     int set_speed(int axis, float sp);
 
     int mv_abs(int axis, float value); // move w.r.t home-position
     int mv_rel(int axis, float value); // move w.r.t current-position
 
     // get current position
+    int get_position();
     int get_position(int axis);
 
     int set_home();
     int set_center();
 
-    int write(const string& cmd);
     const char* device_name();
 
 public:

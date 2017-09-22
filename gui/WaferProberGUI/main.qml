@@ -14,13 +14,6 @@ ApplicationWindow {
         id: backend
     }
 
-    SwipeView {
-        id: swipeView
-        anchors.fill: parent
-        Page1 {
-        }
-
+    Page1 {
     }
-
-
 }
