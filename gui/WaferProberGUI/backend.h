@@ -122,6 +122,8 @@ private:
     float m_speed_y;
     float m_speed_z;
 
+    int unit;
+
 private: // private functions
     bool is_valid_x(float x){
         return x >= 0 && x <= X_MAX;
@@ -130,10 +132,6 @@ private: // private functions
         return y >= 0 && y <= Y_MAX;
     }
     void get_pos_xy();
-    void runMA(int axis, float value);
-    void runMR(int axis, float value);
-
-    void set_speed(int axis, float value);
 };
 
 QML_DECLARE_TYPEINFO(BackEnd, QML_HAS_ATTACHED_PROPERTIES)

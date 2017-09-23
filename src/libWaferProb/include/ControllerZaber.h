@@ -27,7 +27,7 @@ public: // implement controller's interface
     int connect();
     int disconnect();
 
-    char* write_with_reply(const string& cmd);
+    string* write_with_reply(const string& cmd);
 
     int write(const string& cmd);
 
@@ -54,6 +54,7 @@ public:
 private:
     // convert mili-meter to number of turns/steps
     int convert_mm_to_turns(float value);
+    float convert_turns_to_mm(float turns);
 
     inline bool check(int rc){
         // if(rc != Z_SUCCESS) throw rc;

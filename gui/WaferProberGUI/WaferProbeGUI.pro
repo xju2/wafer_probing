@@ -38,4 +38,4 @@ INCLUDEPATH += ../../src/libWaferProb/include
 INCLUDEPATH += ../../src/libGalil/include
 INCLUDEPATH += ../../src/libZaber/include
 
-LIBS += -L../../../build/lib -lWaferProb
+LIBS += -L../../build/lib -lWaferProb

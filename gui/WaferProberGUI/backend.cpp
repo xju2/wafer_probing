@@ -8,6 +8,7 @@ BackEnd::BackEnd(QObject *parent) : QObject(parent)
     m_ctrl = new MotionController("/dev/ttyACM0");
 
     m_current_x = m_current_y = m_current_z = -1.0;
+    unit = 1000;
 }
 
 int BackEnd::connectDevice()
@@ -20,59 +21,42 @@ int BackEnd::connectDevice()
     return status;
 }
 
-void BackEnd::runMA(int axis, float value)
-{
-    if((axis == 0 && is_valid_x(value)) ||
-       (axis == 1 && is_valid_y(value)) ){
-        m_ctrl->mv_abs(axis, value);
-    }
-
-    // update current position
-    get_pos_xy();
-
-    if( (axis == 0 && m_current_x != m_abs_x) ||
-        (axis == 1 && m_current_y != m_abs_y) ){
-        printf("ERROR in moving to absolute location");
-    }
-}
 
 void BackEnd::setAbs_x(float x){
-    if(x != m_current_x){
+    if(x != m_current_x && is_valid_x(x)){
         m_abs_x = x;
-        runMA(0, m_abs_x);
+        m_ctrl->mv_abs(0, m_abs_x*unit);
         emit posXChanged();
+
+        get_pos_xy();
     }
 }
 
 void BackEnd::setAbs_y(float y){
-    if(y != m_current_y){
+    if(y != m_current_y && is_valid_y(y)){
         m_abs_y = y;
-        runMA(1, m_abs_y);
+        m_ctrl->mv_abs(1, m_abs_y*unit);
         emit posYChanged();
+        get_pos_xy();
     }
-
-}
-
-void BackEnd::runMR(int axis, float value)
-{
-    if ( (axis == 0 && is_valid_x(value+m_current_x)) ||
-         (axis == 1 && is_valid_y(value+m_current_y)) ){
-        m_ctrl->mv_rel(axis, value);
-    }
-    // update current position
-    get_pos_xy();
 }
 
 void BackEnd::setRel_x(float x){
-    m_rel_x = x;
-    runMR(0, m_rel_x);
-    emit posXChanged();
+    if(is_valid_x(x+m_current_x)){
+        m_rel_x = x;
+        m_ctrl->mv_rel(0, m_rel_x*unit);
+        emit posXChanged();
+        get_pos_xy();
+    }
 }
 
 void BackEnd::setRel_y(float y){
-    m_rel_y = y;
-    runMR(1, m_rel_y);
-    emit posYChanged();
+    if(is_valid_y(y+m_current_y)){
+        m_rel_y = y;
+        m_ctrl->mv_rel(1, m_rel_y*unit);
+        emit posYChanged();
+        get_pos_xy();
+    }
 }
 
 bool BackEnd::runSH(){
@@ -100,22 +84,18 @@ void BackEnd::get_pos_xy(){
 
 void BackEnd::setSpeedX(float speed_x){
     m_speed_x = speed_x;
-    set_speed(0, m_speed_x);
+    m_ctrl->set_speed(0, m_speed_x*unit);
     emit speedXSet();
 }
 
 void BackEnd::setSpeedY(float speed_y){
     m_speed_y = speed_y;
-    set_speed(1, m_speed_y);
+    m_ctrl->set_speed(1, m_speed_y*unit);
     emit speedYSet();
 }
 
 void BackEnd::setSpeedZ(float speed_z){
     m_speed_z = speed_z;
-    set_speed(2, m_speed_z);
+    m_ctrl->set_speed(2, m_speed_z*unit);
     emit speedZSet();
-}
-
-void BackEnd::set_speed(int axis, float value){
-    m_ctrl->set_speed(axis, value);
 }
