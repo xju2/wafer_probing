@@ -159,20 +159,24 @@ Item {
         id: txt_x_pos
         x: 265
         y: 338
-        width: 18
-        height: 15
+        width: 51
+        height: 20
         text: qsTr("0")
+        verticalAlignment: Text.AlignVCenter
+        horizontalAlignment: Text.AlignHCenter
         textFormat: Text.PlainText
         font.pixelSize: 12
     }
 
     Text {
         id: txt_y_pos
-        x: 296
+        x: 342
         y: 338
-        width: 18
-        height: 15
+        width: 51
+        height: 20
         text: qsTr("0")
+        verticalAlignment: Text.AlignVCenter
+        horizontalAlignment: Text.AlignHCenter
         textFormat: Text.PlainText
         font.pixelSize: 12
     }

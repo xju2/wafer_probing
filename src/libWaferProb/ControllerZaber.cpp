@@ -1,4 +1,5 @@
 #include <stdio.h>
+
 #include <string.h>
 #include <vector>
 #include <stdlib.h>
@@ -57,19 +58,20 @@ int ControllerZaber::write(const string& cmd)
     return 0;
 }
 
-char* ControllerZaber::write_with_reply(const string& cmd)
+string* ControllerZaber::write_with_reply(const string& cmd)
 {
-    char* reply = new char[255];
     if (port < 0){
         printf("%s is not open!", dn.c_str());
         return NULL;
     }
+    char reply[256] = {0};
     za_send(port, cmd.c_str());
     za_receive(port, reply, sizeof(reply));
     printf("%s -> %s\n", cmd.c_str(), reply);
+    string* result = new string(reply);
 
     poll_until_idle();
-    return reply;
+    return result;
 }
 
 int ControllerZaber::set_speed(int axis, float value)
@@ -96,28 +98,27 @@ int ControllerZaber::mv_rel(int axis, float value){
 
 int ControllerZaber::get_position()
 {
+    if(port < 0){
+        return 1;
+    }
     char cmd[256];
     int n = sprintf(cmd, "/1 get pos\n");
-    char* rpy_char = write_with_reply(cmd);
-    if (rpy_char == NULL){
-        m_position[0] = m_position[1] = DEFAULT_ZABER_POS;
-        return 0;
-    }
-
-    string rpy(rpy_char);
-
+    
+    string* rpy = write_with_reply(cmd) ;
+    if(rpy == NULL) return 2;
+   
     // analyze the reply.
 	struct za_reply decoded_reply;
-    za_decode(&decoded_reply, const_cast<char*>(rpy.c_str()));
+    za_decode(&decoded_reply, const_cast<char*>(rpy->c_str()));
     //  analyze response data.
+    string data(decoded_reply.response_data);
     if(strncmp(decoded_reply.response_data, "BADDATA", 7) == 0){
         m_position[0] = m_position[1] = DEFAULT_ZABER_POS;
     } else {
-        string data(decoded_reply.response_data);
         vector<string> raw_items;
         WaferProb::tokenizeString(data, ' ', raw_items);
         for(int i = 0; i < (int) raw_items.size(); i++){
-            m_position[i] = atof(raw_items.at(i).c_str());
+            m_position[i] = convert_turns_to_mm(atof(raw_items.at(i).c_str()));
         }
     }
     return 0;
@@ -161,6 +162,10 @@ int ControllerZaber::convert_mm_to_turns(float value){
     // turns: 1952000 turns
     // length: 305000 micro-meter 
     return value / 0.15625; 
+}
+
+float ControllerZaber::convert_turns_to_mm(float turns){
+    return turns * 305. / 1952000.; 
 }
 
 void ControllerZaber::poll_until_idle(){
