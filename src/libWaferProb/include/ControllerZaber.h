@@ -38,7 +38,6 @@ public: // implement controller's interface
 
     // get current position
     int get_position();
-    int get_position(int axis);
 
     int set_home();
     int set_center();
@@ -58,7 +57,7 @@ private:
 
     inline bool check(int rc){
         // if(rc != Z_SUCCESS) throw rc;
-        return rc == Z_SUCCESS;
+        return (rc == Z_SUCCESS);
     }
     void poll_until_idle();
 };

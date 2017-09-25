@@ -46,7 +46,7 @@ int ControllerZaber::disconnect(){
 int ControllerZaber::write(const string& cmd)
 {
     if (port < 0){
-        printf("%s is not open!", dn.c_str());
+        printf("%s is not open!\n", dn.c_str());
         return -1;
     }
     za_send(port, cmd.c_str());
@@ -123,13 +123,6 @@ int ControllerZaber::get_position()
     }
     return 0;
 }
-
-int ControllerZaber::get_position(int axis)
-{
-    get_position();
-    return m_position[axis];
-}
-
 
 int ControllerZaber::set_home(){
     return write("/home\n");
