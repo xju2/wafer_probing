@@ -48,6 +48,11 @@ get_filename_component(srcfile ${target} NAME)
 add_executable(${execname} tools/${srcfile})
 add_dependencies(${execname} WaferProb)
 set_target_properties(${execname} PROPERTIES LINKER_LANGUAGE CXX)
-target_link_libraries(${execname} WaferProb /Applications/gclib/dylib/gclib.0.dylib /Applications/gclib/dylib/gclibo.0.dylib)
-endforeach()
 
+if(APPLE)
+    target_link_libraries(${execname} WaferProb /Applications/gclib/dylib/gclib.0.dylib /Applications/gclib/dylib/gclibo.0.dylib)
+else()
+    target_link_libraries(${execname} WaferProb gclib gclibo)
+endif()
+
+endforeach()

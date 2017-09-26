@@ -7,6 +7,7 @@
 using namespace std;
 int main(int argc, char** argv){
     ControllerGalil* ctrl = new ControllerGalil("192.168.0.11");
+    ctrl->connect();
 
     string input = "";
     while(true){
@@ -16,7 +17,8 @@ int main(int argc, char** argv){
         if(input[0] == '\n') continue;
         char cmd[256];
         int n = sprintf(cmd, "%s\n", input.c_str());
-        ctrl->write(cmd);
+        // ctrl->write(cmd);
+        ctrl->mv_abs(1, 10.);
     }
 
     delete ctrl;

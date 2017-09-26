@@ -9,7 +9,8 @@ MotionController::MotionController(const char* dn_1):
     ControllerBase()
 {
     xy_ctrl = new ControllerZaber(dn_1);
-    m_position[0] = m_position[1] = -2;
+    z_ctrl = new ControllerGalil("192.168.1.32");
+    m_position[0] = m_position[1] = m_position[2] = -1;
 }
 
 MotionController::~MotionController(){
@@ -24,11 +25,10 @@ int MotionController::connect() {
     // xy_ctrl->set_home();
 
     // connect z station
-    /**
-    const string& cmd_con("192.168.1.32 --subscribe ALL");
-    check_z(GOpen(cmd_con.c_str(), &z_ctrl));
-    printf("Z station is connected.\n");
-    ***/
+    if(z_ctrl->connect() != 0){
+        return 2;
+    }
+
     return 0;
 }
 
@@ -36,6 +36,8 @@ int MotionController::disconnect(){
     // before disconnect, park the device.
     xy_ctrl->park();
     xy_ctrl->disconnect();
+
+    z_ctrl->disconnect();
     return 0;
 }
 
@@ -43,7 +45,7 @@ int MotionController::set_speed(int axis, float sp){
     if (axis == 0 || axis == 1) { // x-y-axis
         xy_ctrl->set_speed(axis+1, sp);
     } else if (axis == 2) {
-        // not yet
+        z_ctrl->set_speed(axis, sp);
     } else {
         ;
     }
@@ -54,8 +56,7 @@ int MotionController::mv_abs(int axis, float value){
     if(axis == 0 || axis == 1){
         xy_ctrl->mv_abs(axis+1, value);
     } else if (axis == 2){
-        // not yet
-        ;
+        z_ctrl->mv_abs(axis, value);
     } else {
         ;
     }
@@ -66,6 +67,7 @@ int MotionController::mv_rel(int axis, float value) {
     if(axis == 0 || axis == 1){
         xy_ctrl->mv_rel(axis+1, value);
     } else if (axis == 2) {
+        z_ctrl->mv_rel(axis, value);
     } else {}
     return 0;
 }
@@ -74,6 +76,7 @@ int MotionController::get_position(){
     xy_ctrl->get_position();
     m_position[0] = xy_ctrl->m_position[0];
     m_position[1] = xy_ctrl->m_position[1];
+
     return 0;
 }
 
@@ -86,7 +89,9 @@ int MotionController::write(int axis, const string& cmd)
 {
     if(axis == 0 || axis == 1){
         xy_ctrl->write(cmd);
-    }
+    } else if(axis == 2){
+        z_ctrl->write(cmd);
+    } else {}
     return 0;
 }
 

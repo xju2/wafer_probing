@@ -16,6 +16,9 @@
 
 #include "ControllerBase.h"
 
+#include <string>
+
+using namespace std;
 class ControllerGalil : public ControllerBase
 {
 private:
@@ -50,11 +53,18 @@ private:
     int convert_mm_to_turns(float value){
         return (int) value;
     }
+    float convert_turns_to_mm(float turns){
+        return turns;
+    }
     char axis_index_to_name(int axis){
         // ABC is for XYZ!
         // axis starts from 0 to 2;
         return 'A'+axis;
     }
+    string generate_cmd(const char* cmd, int axis, float value);
+    void make_a_move(int axis);
+    char buf[1024];
+
 };
 
 #endif

@@ -8,13 +8,14 @@
 
 #include "ControllerBase.h"
 #include "ControllerZaber.h"
+#include "ControllerGalil.h"
 
 class MotionController : public ControllerBase{
 
 private:
 
     ControllerZaber* xy_ctrl; // xy-axis station is controlled by a machine from Zaber
-    GCon z_ctrl;    // z-axis controled by a machine from Garlil
+    ControllerGalil* z_ctrl;    // z-axis controled by a machine from Garlil
 
 public:
     float m_position[3];
