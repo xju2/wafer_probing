@@ -51,7 +51,7 @@ private:
         return (rc == G_NO_ERROR);
     }
     int convert_mm_to_turns(float value){
-        return value/(1276E-5);
+        return value*1112679/14.189;
     }
     float convert_turns_to_mm(float turns){
         float res = 14.189/1112679 * turns + 12.7315;
@@ -63,7 +63,7 @@ private:
         // axis starts from 0 to 2;
         return 'A'+axis;
     }
-    string generate_cmd(const char* cmd, int axis, float value);
+    string generate_cmd(const char* cmd, int axis, int steps);
     void make_a_move(int axis);
     char buf[1024];
 

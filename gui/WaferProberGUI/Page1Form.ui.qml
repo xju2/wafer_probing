@@ -32,12 +32,15 @@ Item {
     property alias txt_sep_input: txt_sep_input
     property alias sb_precision: sb_precision
     property alias sb_rough: sb_rough
+    property alias btn_go_top: btn_go_top
+    property alias btn_go_bottom: btn_go_bottom
+    property alias btn_go_mid: btn_go_mid
     rotation: 0
 
     Button {
         id: connect
-        x: 124
-        y: 93
+        x: 147
+        y: 42
         text: qsTr("Connect")
         visible: true
         autoRepeat: false
@@ -136,35 +139,35 @@ Item {
 
     Button {
         id: btn_mv_abs
-        x: 32
-        y: 181
+        x: 55
+        y: 130
         width: 114
         height: 18
-        text: qsTr("move absolute:")
+        text: qsTr("mv absolute:")
     }
 
     Button {
         id: btn_mv_rel
-        x: 32
-        y: 211
+        x: 55
+        y: 160
         width: 114
         height: 18
-        text: qsTr("move relative:")
+        text: qsTr("mv relative:")
     }
 
     Label {
         id: label
-        x: 33
-        y: 241
+        x: 56
+        y: 190
         width: 113
-        height: 16
+        height: 18
         text: qsTr("current location:")
     }
 
     Text {
         id: txt_x_pos
-        x: 157
-        y: 241
+        x: 180
+        y: 190
         width: 51
         height: 20
         text: qsTr("0")
@@ -176,8 +179,8 @@ Item {
 
     Text {
         id: txt_y_pos
-        x: 234
-        y: 241
+        x: 257
+        y: 190
         width: 51
         height: 20
         text: qsTr("0")
@@ -189,10 +192,10 @@ Item {
 
     Label {
         id: label1
-        x: 200
-        y: 164
-        width: 20
-        height: 16
+        x: 180
+        y: 113
+        width: 51
+        height: 18
         text: qsTr("X [mm]")
         verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignHCenter
@@ -200,10 +203,10 @@ Item {
 
     Label {
         id: label2
-        x: 250
-        y: 164
-        width: 18
-        height: 16
+        x: 257
+        y: 113
+        width: 51
+        height: 18
         text: qsTr("Y [mm]")
         verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignHCenter
@@ -211,8 +214,8 @@ Item {
 
     TextInput {
         id: tx_abs_x
-        x: 157
-        y: 181
+        x: 180
+        y: 130
         width: 51
         height: 20
         text: "0."
@@ -223,8 +226,8 @@ Item {
 
     TextInput {
         id: tx_abs_y
-        x: 234
-        y: 181
+        x: 257
+        y: 130
         width: 51
         height: 20
         text: qsTr("0")
@@ -234,8 +237,8 @@ Item {
 
     TextInput {
         id: tx_rel_x
-        x: 157
-        y: 211
+        x: 180
+        y: 160
         width: 51
         height: 20
         text: qsTr("0")
@@ -245,8 +248,8 @@ Item {
 
     TextInput {
         id: tx_rel_y
-        x: 234
-        y: 211
+        x: 257
+        y: 160
         width: 51
         height: 20
         text: qsTr("0")
@@ -256,8 +259,8 @@ Item {
 
     Label {
         id: label6
-        x: 353
-        y: 164
+        x: 376
+        y: 113
         width: 18
         height: 16
         text: qsTr("Z [mm]")
@@ -267,19 +270,19 @@ Item {
 
     Button {
         id: btn_mc_toggle
-        x: 316
-        y: 267
+        x: 339
+        y: 216
         width: 114
         height: 18
-        text: qsTr("move contact")
+        text: qsTr("mv contact")
     }
 
     Text {
         id: txt_zcontact
-        x: 436
-        y: 267
+        x: 459
+        y: 216
         width: 114
-        height: 18
+        height: 29
         text: qsTr("in separate")
         verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignHCenter
@@ -287,8 +290,8 @@ Item {
 
     Button {
         id: btn_set_sep
-        x: 316
-        y: 291
+        x: 339
+        y: 240
         width: 114
         height: 18
         text: qsTr("set separate")
@@ -303,20 +306,20 @@ Item {
 
     Button {
         id: btn_sh
-        x: 173
-        y: 267
+        x: 196
+        y: 216
         width: 112
         height: 18
-        text: qsTr("Go Home [x-y]")
+        text: qsTr("go home [x-y]")
     }
 
     Button {
         id: btn_sm
-        x: 173
-        y: 291
+        x: 196
+        y: 240
         width: 112
         height: 18
-        text: qsTr("Set Middle")
+        text: qsTr("set middle")
     }
 
     Flickable {
@@ -347,8 +350,8 @@ Item {
 
     Button {
         id: dismiss
-        x: 285
-        y: 93
+        x: 308
+        y: 42
         text: qsTr("Disconnect")
         spacing: 0
         autoExclusive: false
@@ -363,8 +366,8 @@ Item {
 
     Text {
         id: txt_z_pos
-        x: 337
-        y: 241
+        x: 360
+        y: 190
         width: 51
         height: 20
         text: qsTr("0")
@@ -376,8 +379,8 @@ Item {
 
     TextInput {
         id: txt_sep_input
-        x: 436
-        y: 291
+        x: 459
+        y: 240
         width: 71
         height: 18
         text: qsTr("700")
@@ -388,8 +391,8 @@ Item {
 
     Text {
         id: txt_sep_label
-        x: 507
-        y: 291
+        x: 530
+        y: 240
         width: 51
         height: 20
         text: qsTr("micrometer")
@@ -412,8 +415,8 @@ Item {
 
     SpinBox {
         id: sb_rough
-        x: 308
-        y: 185
+        x: 331
+        y: 134
         width: 140
         height: 21
         from: -10
@@ -424,25 +427,54 @@ Item {
 
     Label {
         id: label9
-        x: 448
-        y: 184
+        x: 471
+        y: 133
+        height: 18
         text: qsTr("600 micrometer/step")
     }
 
     Label {
         id: label10
-        x: 454
-        y: 214
+        x: 477
+        y: 163
+        height: 18
         text: qsTr("60 micrometer/step")
     }
 
     SpinBox {
         id: sb_precision
-        x: 308
-        y: 214
+        x: 331
+        y: 163
         width: 140
         height: 21
         from: -100
         to: 100
+    }
+
+    Button {
+        id: btn_go_top
+        x: 339
+        y: 264
+        width: 114
+        height: 18
+        text: qsTr("go top")
+    }
+
+    Button {
+        id: btn_go_bottom
+        x: 339
+        y: 288
+        width: 114
+        height: 18
+        text: qsTr("go bottom")
+    }
+
+    Button {
+        id: btn_go_mid
+        x: 339
+        y: 312
+        width: 114
+        height: 18
+        text: qsTr("go middle")
     }
 }

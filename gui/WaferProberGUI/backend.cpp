@@ -118,3 +118,24 @@ void BackEnd::setSpeedZ(float speed_z){
     m_ctrl->set_speed(2, m_speed_z*unit);
     emit speedZSet();
 }
+
+bool BackEnd::zTop(){
+    m_ctrl->mv_abs(2, 14.189);
+    m_ctrl->get_pos_z();
+    m_current_z = m_ctrl->m_position[2];
+    return true;
+}
+
+bool BackEnd::zBottom(){
+    m_ctrl->mv_abs(2, 0.);
+    m_ctrl->get_pos_z();
+    m_current_z = m_ctrl->m_position[2];
+    return true;
+}
+
+bool BackEnd::zMid(){
+    m_ctrl->mv_abs(2, 7.0945);
+    m_ctrl->get_pos_z();
+    m_current_z = m_ctrl->m_position[2];
+    return true;
+}

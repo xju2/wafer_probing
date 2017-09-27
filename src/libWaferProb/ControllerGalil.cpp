@@ -22,6 +22,7 @@ int ControllerGalil::connect(){
     printf("%s: connecting to device %s\n", __FUNCTION__, dn.c_str());
     if( check(GOpen(dn.c_str(), &port)) ){
         printf("%s connected\n", dn.c_str());
+        get_position();
         status = 0;
     } else {
         printf("%s not connected\n", dn.c_str());
@@ -63,14 +64,16 @@ int ControllerGalil::set_speed(int axis, float sp)
 }
 
 int ControllerGalil::mv_abs(int axis, float value){
-    string cmd = generate_cmd("PA", axis, value);
+    int steps = convert_mm_to_turns(value - m_position[axis]);
+    string cmd = generate_cmd("PA", axis, steps);
     write(cmd);
     make_a_move(axis);
     return 0;
 }
 
 int ControllerGalil::mv_rel(int axis, float value){
-    string cmd = generate_cmd("PR", axis, value);
+    int steps = convert_mm_to_turns(value);
+    string cmd = generate_cmd("PR", axis, steps);
     printf("%s\n", cmd.c_str());
     write(cmd);
 
@@ -102,8 +105,8 @@ int ControllerGalil::set_center(){
     return 0;
 }
 
-string ControllerGalil::generate_cmd(const char* cmd, int axis, float value){
-    int steps = convert_mm_to_turns(value);
+string ControllerGalil::generate_cmd(const char* cmd, int axis, int steps)
+{
     char val_str[256];
     sprintf(val_str, "%d", steps);
     string cmd_val(",,");

@@ -70,16 +70,17 @@ Page1Form {
     // z-axis, move contact and separate.
     property var isContact: false
     btn_mc_toggle.onClicked: {
-
         if(! isContact && ! backend.zContact) {
             isContact = true
             backend.zContact = true
             txt_zcontact.text = "in contact"
+            txt_zcontact.color = "red"
             btn_mc_toggle.text = "mv separate"
         } else if(isContact  && backend.zContact){
             isContact = false
             backend.zContact = false
             txt_zcontact.text = "in separate"
+            txt_zcontact.color = "green"
             btn_mc_toggle.text = "mv contact"
         }
         // update location
@@ -106,6 +107,19 @@ Page1Form {
     }
     sb_precision.up.onPressedChanged: {
         backend.rel_z = 0.060
+        txt_z_pos.text = Number(backend.getPosZ).toLocaleString()
+    }
+
+    btn_go_top.onClicked: {
+        backend.zTop
+        txt_z_pos.text = Number(backend.getPosZ).toLocaleString()
+    }
+    btn_go_bottom.onClicked: {
+        backend.zBottom
+        txt_z_pos.text = Number(backend.getPosZ).toLocaleString()
+    }
+    btn_go_mid.onClicked: {
+        backend.zMid
         txt_z_pos.text = Number(backend.getPosZ).toLocaleString()
     }
 

@@ -42,6 +42,9 @@ class BackEnd : public QObject
     // z-axis.
     Q_PROPERTY(bool zContact READ zContact WRITE setZContact)
     Q_PROPERTY(float zSep READ zSep WRITE setZSep)
+    Q_PROPERTY(bool zTop READ zTop)
+    Q_PROPERTY(bool zBottom READ zBottom)
+    Q_PROPERTY(bool zMid READ zMid)
 
 public:
     static BackendAttachedType *qmlAttachedProperties(QObject *object)
@@ -53,6 +56,7 @@ public:
     explicit BackEnd(QObject *parent = nullptr);
 
     int connectDevice();
+    bool dismiss();
 
     // getter
     float rel_x(){ return m_rel_x; }
@@ -109,7 +113,12 @@ public:
         m_z_sep = sep;
     }
 
-    bool dismiss();
+    // move to top or bottom in z-axis
+    bool zTop();
+    bool zBottom();
+    bool zMid();
+
+
 
 signals:
     void deviceConnected();
