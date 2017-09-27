@@ -43,10 +43,13 @@ int ControllerGalil::write(const string& cmd){
         printf("%s is not open\n", dn.c_str());
         return -1;
     }
-    if( check(GCmd(port, cmd.c_str())) != 0){
+    char* trimmed;
+    if( ! check(GCmdT(port, cmd.c_str(), buf, sizeof(buf), &trimmed)) )
+    {
         printf("%s is not recognised\n", cmd.c_str());
         return -2;
     }
+    printf("Galil: %s --> %s\n", cmd.c_str(), trimmed);
     return 0;
 }
 
@@ -68,6 +71,7 @@ int ControllerGalil::mv_abs(int axis, float value){
 
 int ControllerGalil::mv_rel(int axis, float value){
     string cmd = generate_cmd("PR", axis, value);
+    printf("%s\n", cmd.c_str());
     write(cmd);
 
     make_a_move(axis);
@@ -80,9 +84,10 @@ int ControllerGalil::get_position(){
     char* trimmed;
     GCmdT(port, "RP", buf, sizeof(buf), &trimmed);
     string data(trimmed);
+    printf("Galic: RP --> %s\n", trimmed);
 
     vector<string> raw_items;
-    WaferProb::tokenizeString(data, ' ', raw_items);
+    WaferProb::tokenizeString(data, ',', raw_items);
     for(int i = 0; i < (int) raw_items.size(); i++){
         m_position[i] = convert_turns_to_mm(atof(raw_items.at(i).c_str()));
     }

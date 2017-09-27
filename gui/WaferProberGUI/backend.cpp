@@ -9,6 +9,8 @@ BackEnd::BackEnd(QObject *parent) : QObject(parent)
 
     m_current_x = m_current_y = m_current_z = -1.0;
     unit = 1000;
+    m_z_sep = 700; // micrometer
+    m_z_isContact = false;
 }
 
 int BackEnd::connectDevice()
@@ -21,6 +23,13 @@ int BackEnd::connectDevice()
     return status;
 }
 
+bool BackEnd::dismiss(){
+    if(m_z_isContact){
+        m_ctrl->mv_rel(2, -1*m_z_sep);
+    }
+    m_ctrl->disconnect();
+    return true;
+}
 
 void BackEnd::setAbs_x(float x){
     if(x != m_current_x && is_valid_x(x)){
@@ -59,6 +68,16 @@ void BackEnd::setRel_y(float y){
     }
 }
 
+void BackEnd::setRel_z(float z){
+    // z is in unit of mm.
+    if(is_valid_z(z + m_current_z)){
+        m_rel_z = z;
+        m_ctrl->mv_rel(2, m_rel_z*unit);
+        m_ctrl->get_pos_z();
+        m_current_z = m_ctrl->m_position[2];
+    }
+}
+
 bool BackEnd::runSH(){
     m_ctrl->set_home();
     // update current position
@@ -77,7 +96,7 @@ bool BackEnd::runSM(){
 }
 
 void BackEnd::get_pos_xy(){
-    m_ctrl->get_position();
+    m_ctrl->get_pos_xy();
     m_current_x = m_ctrl->m_position[0];
     m_current_y = m_ctrl->m_position[1];
 }

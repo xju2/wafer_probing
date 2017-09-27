@@ -51,10 +51,12 @@ private:
         return (rc == G_NO_ERROR);
     }
     int convert_mm_to_turns(float value){
-        return (int) value;
+        return value/(1276E-5);
     }
     float convert_turns_to_mm(float turns){
-        return turns;
+        float res = 14.189/1112679 * turns + 12.7315;
+        res = (int)(res*100) / 100.;
+        return res;
     }
     char axis_index_to_name(int axis){
         // ABC is for XYZ!

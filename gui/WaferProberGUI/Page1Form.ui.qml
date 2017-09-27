@@ -7,9 +7,6 @@ Item {
     property alias label4: label4
     property alias label5: label5
     property alias connect: connect
-    property alias button5: button5
-    property alias button6: button6
-    property alias button7: button7
     property alias btn_mv_abs: btn_mv_abs
     property alias btn_mv_rel: btn_mv_rel
     property alias tx_abs_x: tx_abs_x
@@ -27,6 +24,14 @@ Item {
     property alias txt_speed_x: txt_speed_x
     property alias txt_speed_y: txt_speed_y
     property alias txt_speed_z: txt_speed_z
+    property alias btn_mc_toggle: btn_mc_toggle
+    property alias dismiss: dismiss
+    property alias txt_zcontact: txt_zcontact
+    property alias txt_z_pos: txt_z_pos
+    property alias btn_set_sep: btn_set_sep
+    property alias txt_sep_input: txt_sep_input
+    property alias sb_precision: sb_precision
+    property alias sb_rough: sb_rough
     rotation: 0
 
     Button {
@@ -47,29 +52,29 @@ Item {
 
     Label {
         id: label3
-        x: 229
-        y: 149
+        x: 563
+        y: 398
         text: qsTr("mm/s")
     }
 
     Label {
         id: label4
-        x: 229
-        y: 169
+        x: 563
+        y: 418
         text: qsTr("mm/s")
     }
 
     Label {
         id: label5
-        x: 229
-        y: 189
+        x: 563
+        y: 438
         text: qsTr("mm/s")
     }
 
     TextInput {
         id: txt_speed_x
-        x: 172
-        y: 149
+        x: 506
+        y: 398
         width: 51
         height: 20
         color: "#25a341"
@@ -81,8 +86,8 @@ Item {
 
     TextInput {
         id: txt_speed_y
-        x: 172
-        y: 169
+        x: 506
+        y: 418
         width: 51
         height: 20
         text: qsTr("5")
@@ -92,8 +97,8 @@ Item {
 
     TextInput {
         id: txt_speed_z
-        x: 172
-        y: 189
+        x: 506
+        y: 438
         width: 51
         height: 20
         text: qsTr("5")
@@ -103,35 +108,36 @@ Item {
 
     Button {
         id: btn_speed_x
-        x: 65
-        y: 149
-        width: 96
+        x: 430
+        y: 397
+        width: 59
         height: 18
-        text: qsTr("Set X speed:")
+        text: qsTr("X:")
+        font.pointSize: 9
     }
 
     Button {
         id: btn_speed_y
-        x: 65
-        y: 169
-        width: 96
+        x: 430
+        y: 417
+        width: 59
         height: 18
-        text: qsTr("Set Y speed:")
+        text: qsTr("Y:")
     }
 
     Button {
         id: btn_speed_z
-        x: 65
-        y: 189
-        width: 96
+        x: 430
+        y: 437
+        width: 59
         height: 18
-        text: qsTr("Set Z speed:")
+        text: qsTr("Z:")
     }
 
     Button {
         id: btn_mv_abs
-        x: 140
-        y: 278
+        x: 32
+        y: 181
         width: 114
         height: 18
         text: qsTr("move absolute:")
@@ -139,8 +145,8 @@ Item {
 
     Button {
         id: btn_mv_rel
-        x: 140
-        y: 308
+        x: 32
+        y: 211
         width: 114
         height: 18
         text: qsTr("move relative:")
@@ -148,8 +154,8 @@ Item {
 
     Label {
         id: label
-        x: 141
-        y: 338
+        x: 33
+        y: 241
         width: 113
         height: 16
         text: qsTr("current location:")
@@ -157,8 +163,8 @@ Item {
 
     Text {
         id: txt_x_pos
-        x: 265
-        y: 338
+        x: 157
+        y: 241
         width: 51
         height: 20
         text: qsTr("0")
@@ -170,8 +176,8 @@ Item {
 
     Text {
         id: txt_y_pos
-        x: 342
-        y: 338
+        x: 234
+        y: 241
         width: 51
         height: 20
         text: qsTr("0")
@@ -183,8 +189,8 @@ Item {
 
     Label {
         id: label1
-        x: 280
-        y: 261
+        x: 200
+        y: 164
         width: 20
         height: 16
         text: qsTr("X [mm]")
@@ -194,8 +200,8 @@ Item {
 
     Label {
         id: label2
-        x: 358
-        y: 261
+        x: 250
+        y: 164
         width: 18
         height: 16
         text: qsTr("Y [mm]")
@@ -205,8 +211,8 @@ Item {
 
     TextInput {
         id: tx_abs_x
-        x: 265
-        y: 278
+        x: 157
+        y: 181
         width: 51
         height: 20
         text: "0."
@@ -217,8 +223,8 @@ Item {
 
     TextInput {
         id: tx_abs_y
-        x: 342
-        y: 278
+        x: 234
+        y: 181
         width: 51
         height: 20
         text: qsTr("0")
@@ -228,8 +234,8 @@ Item {
 
     TextInput {
         id: tx_rel_x
-        x: 265
-        y: 308
+        x: 157
+        y: 211
         width: 51
         height: 20
         text: qsTr("0")
@@ -239,8 +245,8 @@ Item {
 
     TextInput {
         id: tx_rel_y
-        x: 342
-        y: 308
+        x: 234
+        y: 211
         width: 51
         height: 20
         text: qsTr("0")
@@ -250,37 +256,39 @@ Item {
 
     Label {
         id: label6
-        x: 442
-        y: 261
+        x: 353
+        y: 164
         width: 18
         height: 16
-        text: qsTr("Z")
+        text: qsTr("Z [mm]")
         verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignHCenter
     }
 
     Button {
-        id: button5
-        x: 407
-        y: 278
+        id: btn_mc_toggle
+        x: 316
+        y: 267
         width: 114
         height: 18
         text: qsTr("move contact")
     }
 
-    Button {
-        id: button6
-        x: 407
-        y: 308
+    Text {
+        id: txt_zcontact
+        x: 436
+        y: 267
         width: 114
         height: 18
-        text: qsTr("move separate")
+        text: qsTr("in separate")
+        verticalAlignment: Text.AlignVCenter
+        horizontalAlignment: Text.AlignHCenter
     }
 
     Button {
-        id: button7
-        x: 407
-        y: 338
+        id: btn_set_sep
+        x: 316
+        y: 291
         width: 114
         height: 18
         text: qsTr("set separate")
@@ -295,27 +303,27 @@ Item {
 
     Button {
         id: btn_sh
-        x: 364
-        y: 149
-        width: 96
+        x: 173
+        y: 267
+        width: 112
         height: 18
-        text: qsTr("Set Home")
+        text: qsTr("Go Home [x-y]")
     }
 
     Button {
         id: btn_sm
-        x: 364
-        y: 173
-        width: 96
+        x: 173
+        y: 291
+        width: 112
         height: 18
         text: qsTr("Set Middle")
     }
 
     Flickable {
         id: flickable
-        x: 129
-        y: 379
-        width: 400
+        x: 23
+        y: 388
+        width: 395
         height: 75
         flickableDirection: Flickable.VerticalFlick
 
@@ -323,7 +331,7 @@ Item {
             id: output
             x: 0
             y: 0
-            width: 395
+            width: 393
             height: 72
             wrapMode: TextArea.Wrap
             text: "Program started..."
@@ -335,5 +343,106 @@ Item {
             id: sbText
             policy: ScrollBar.AlwaysOn
         }
+    }
+
+    Button {
+        id: dismiss
+        x: 285
+        y: 93
+        text: qsTr("Disconnect")
+        spacing: 0
+        autoExclusive: false
+        visible: true
+        autoRepeat: false
+        enabled: true
+        font.family: "Tahoma"
+        checkable: false
+        highlighted: false
+        checked: false
+    }
+
+    Text {
+        id: txt_z_pos
+        x: 337
+        y: 241
+        width: 51
+        height: 20
+        text: qsTr("0")
+        verticalAlignment: Text.AlignVCenter
+        font.pixelSize: 12
+        horizontalAlignment: Text.AlignHCenter
+        textFormat: Text.PlainText
+    }
+
+    TextInput {
+        id: txt_sep_input
+        x: 436
+        y: 291
+        width: 71
+        height: 18
+        text: qsTr("700")
+        wrapMode: Text.NoWrap
+        verticalAlignment: Text.AlignVCenter
+        horizontalAlignment: Text.AlignHCenter
+    }
+
+    Text {
+        id: txt_sep_label
+        x: 507
+        y: 291
+        width: 51
+        height: 20
+        text: qsTr("micrometer")
+        verticalAlignment: Text.AlignVCenter
+        font.pixelSize: 12
+        horizontalAlignment: Text.AlignHCenter
+        textFormat: Text.PlainText
+    }
+
+    Label {
+        id: label8
+        x: 488
+        y: 374
+        width: 113
+        height: 17
+        text: qsTr("Set Speed")
+        verticalAlignment: Text.AlignVCenter
+        horizontalAlignment: Text.AlignHCenter
+    }
+
+    SpinBox {
+        id: sb_rough
+        x: 308
+        y: 185
+        width: 140
+        height: 21
+        from: -10
+        spacing: 0
+        to: 10
+        value: 1
+    }
+
+    Label {
+        id: label9
+        x: 448
+        y: 184
+        text: qsTr("600 micrometer/step")
+    }
+
+    Label {
+        id: label10
+        x: 454
+        y: 214
+        text: qsTr("60 micrometer/step")
+    }
+
+    SpinBox {
+        id: sb_precision
+        x: 308
+        y: 214
+        width: 140
+        height: 21
+        from: -100
+        to: 100
     }
 }

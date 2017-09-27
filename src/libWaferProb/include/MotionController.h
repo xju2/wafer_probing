@@ -35,6 +35,9 @@ public:
     int get_position(int axis);
     int get_position();
 
+    int get_pos_xy();
+    int get_pos_z();
+
     int set_home();
     int set_center();
 

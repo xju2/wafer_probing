@@ -10,7 +10,7 @@
 
 #define X_MAX 305  // unit of mm. range is: [0, 305] mm
 #define Y_MAX 305  // unit of mm. range is: [0, 305] mm
-#define Z_MAX 30   // this is arbitrary.
+#define Z_MAX 9    // unit of mm. range is: [0, 9] mm
 
 #include "backendattachedtype.h"
 
@@ -18,8 +18,10 @@ class BackEnd : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(int to_connect READ connectDevice NOTIFY deviceConnected)
+    Q_PROPERTY(bool dismiss READ dismiss)
     Q_PROPERTY(float rel_x READ rel_x WRITE setRel_x NOTIFY posXChanged)
     Q_PROPERTY(float rel_y READ rel_y WRITE setRel_y NOTIFY posYChanged)
+    Q_PROPERTY(float rel_z READ rel_z WRITE setRel_z)
     Q_PROPERTY(float abs_x READ abs_x WRITE setAbs_x NOTIFY posXChanged)
     Q_PROPERTY(float abs_y READ abs_y WRITE setAbs_y NOTIFY posYChanged)
 
@@ -37,6 +39,10 @@ class BackEnd : public QObject
     Q_PROPERTY(float speedY READ getSpeedY WRITE setSpeedY NOTIFY speedYSet)
     Q_PROPERTY(float speedZ READ getSpeedZ WRITE setSpeedZ NOTIFY speedZSet)
 
+    // z-axis.
+    Q_PROPERTY(bool zContact READ zContact WRITE setZContact)
+    Q_PROPERTY(float zSep READ zSep WRITE setZSep)
+
 public:
     static BackendAttachedType *qmlAttachedProperties(QObject *object)
     {
@@ -51,6 +57,7 @@ public:
     // getter
     float rel_x(){ return m_rel_x; }
     float rel_y(){ return m_rel_y; }
+    float rel_z(){ return m_rel_z; }
 
     float abs_x(){ return m_abs_x; }
     float abs_y(){ return m_abs_y; }
@@ -58,6 +65,7 @@ public:
     // setter
     void setRel_x(float x);
     void setRel_y(float y);
+    void setRel_z(float z);
     void setAbs_x(float x);
     void setAbs_y(float y);
 
@@ -65,7 +73,12 @@ public:
     bool runSM();
     float getPosX(){ return m_current_x; emit posXGot(); }
     float getPosY(){ return m_current_y; emit posYGot(); }
-    float getPosZ(){ return m_current_z; emit posZGot(); }
+    float getPosZ(){
+        m_ctrl->get_pos_z();
+        m_current_z = m_ctrl->m_position[2];
+        return m_current_z;
+        emit posZGot();
+    }
 
     void setSpeedX(float speed_x);
     void setSpeedY(float speed_y);
@@ -74,6 +87,29 @@ public:
     float getSpeedX() { return m_speed_x; }
     float getSpeedY() { return m_speed_y; }
     float getSpeedZ() { return m_speed_z; }
+
+    // read
+    bool zContact(){ return m_z_isContact; }
+    void setZContact(bool is_contact) {
+        if(is_contact && ! m_z_isContact){
+            // move to contact
+            m_ctrl->mv_rel(2, m_z_sep);
+            m_z_isContact = true;
+        } else if (!is_contact && m_z_isContact){
+            // move to separate
+            m_ctrl->mv_rel(2, -1*m_z_sep);
+            m_z_isContact = false;
+        } else {
+            // don't move
+        }
+    }
+
+    float zSep(){return m_z_sep;}
+    void setZSep(float sep){
+        m_z_sep = sep;
+    }
+
+    bool dismiss();
 
 signals:
     void deviceConnected();
@@ -103,12 +139,13 @@ private:
 
     float m_rel_x;
     float m_rel_y;
+    float m_rel_z;
 
     float m_abs_x;
     float m_abs_y;
 
     float m_z_sep; // distance between needle and chip when in status of separation
-    float m_z_isContact; // tell the program if needle and chip are in contact.
+    bool m_z_isContact; // tell the program if needle and chip are in contact.
 
     // variables used for actions. their values are meaningless.
     bool m_runSH;
@@ -122,6 +159,7 @@ private:
     float m_speed_y;
     float m_speed_z;
 
+
     int unit;
 
 private: // private functions
@@ -130,6 +168,9 @@ private: // private functions
     }
     bool is_valid_y(float y){
         return y >= 0 && y <= Y_MAX;
+    }
+    bool is_valid_z(float z){
+        return z >=0 && z <= Z_MAX;
     }
     void get_pos_xy();
 };

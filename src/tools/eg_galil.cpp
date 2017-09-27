@@ -6,7 +6,7 @@
 
 using namespace std;
 int main(int argc, char** argv){
-    ControllerGalil* ctrl = new ControllerGalil("192.168.0.11");
+    ControllerGalil* ctrl = new ControllerGalil("192.168.1.30");
     ctrl->connect();
 
     string input = "";
@@ -15,10 +15,10 @@ int main(int argc, char** argv){
         getline(cin, input);
         if(input[0] == 'q') break;
         if(input[0] == '\n') continue;
-        char cmd[256];
-        int n = sprintf(cmd, "%s\n", input.c_str());
-        // ctrl->write(cmd);
-        ctrl->mv_abs(1, 10.);
+        // char cmd[256];
+        // int n = sprintf(cmd, "%s", input.c_str());
+        ctrl->write(input);
+        // ctrl->mv_abs(1, 10.);
     }
 
     delete ctrl;

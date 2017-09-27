@@ -9,7 +9,7 @@ MotionController::MotionController(const char* dn_1):
     ControllerBase()
 {
     xy_ctrl = new ControllerZaber(dn_1);
-    z_ctrl = new ControllerGalil("192.168.1.32");
+    z_ctrl = new ControllerGalil("192.168.1.30");
     m_position[0] = m_position[1] = m_position[2] = -1;
 }
 
@@ -73,12 +73,24 @@ int MotionController::mv_rel(int axis, float value) {
 }
 
 int MotionController::get_position(){
+    get_pos_xy();
+    get_pos_z();
+    return 0;
+}
+
+int MotionController::get_pos_xy(){
     xy_ctrl->get_position();
     m_position[0] = xy_ctrl->m_position[0];
     m_position[1] = xy_ctrl->m_position[1];
-
     return 0;
 }
+
+int MotionController::get_pos_z(){
+    z_ctrl->get_position();
+    m_position[2] = z_ctrl->m_position[2];
+    return 0;
+}
+
 
 int MotionController::get_position(int axis){
     get_position();
