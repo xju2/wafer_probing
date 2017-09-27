@@ -12,6 +12,7 @@ class ControllerBase{
 protected:
 
     int status; // 0 is ok, non-zero indicates problems
+    bool m_is_connected;
 
 public:
     float m_position[3];
@@ -19,7 +20,8 @@ public:
 public:
     ControllerBase();
     virtual ~ControllerBase();
-    int get_status();
+    int get_status() { return status; }
+    bool is_connected() { return m_is_connected; }
 
     virtual int connect() = 0;
     virtual int disconnect() = 0;

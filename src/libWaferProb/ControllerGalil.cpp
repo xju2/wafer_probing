@@ -19,11 +19,14 @@ ControllerGalil::~ControllerGalil(){
 }
 
 int ControllerGalil::connect(){
+    if(m_is_connected) return 0;
+
     printf("%s: connecting to device %s\n", __FUNCTION__, dn.c_str());
     if( check(GOpen(dn.c_str(), &port)) ){
         printf("%s connected\n", dn.c_str());
         get_position();
         status = 0;
+        m_is_connected = true;
     } else {
         printf("%s not connected\n", dn.c_str());
         status = 1;

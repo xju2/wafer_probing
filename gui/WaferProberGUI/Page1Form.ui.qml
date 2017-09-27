@@ -35,6 +35,10 @@ Item {
     property alias btn_go_top: btn_go_top
     property alias btn_go_bottom: btn_go_bottom
     property alias btn_go_mid: btn_go_mid
+    property alias btn_stop: btn_stop
+    property alias btn_scan_x: btn_scan_x
+    property alias btn_scan_y: btn_scan_y
+    property alias busyID: busyID
     rotation: 0
 
     Button {
@@ -310,7 +314,7 @@ Item {
         y: 216
         width: 112
         height: 18
-        text: qsTr("go home [x-y]")
+        text: qsTr("go home")
     }
 
     Button {
@@ -476,5 +480,42 @@ Item {
         width: 114
         height: 18
         text: qsTr("go middle")
+    }
+
+    Button {
+        id: btn_stop
+        x: 91
+        y: 228
+        width: 70
+        height: 42
+        text: qsTr("STOP")
+    }
+
+    Button {
+        id: btn_scan_x
+        x: 196
+        y: 269
+        width: 112
+        height: 18
+        text: qsTr("scan X")
+    }
+
+    Button {
+        id: btn_scan_y
+        x: 196
+        y: 293
+        width: 112
+        height: 18
+        text: qsTr("scan Y")
+    }
+
+    BusyIndicator {
+        id: busyID
+        x: 48
+        y: 228
+        width: 37
+        height: 47
+        running: false
+        spacing: 3
     }
 }

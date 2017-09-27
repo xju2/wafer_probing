@@ -19,11 +19,14 @@ ControllerZaber::ControllerZaber(const char* device_name):
 }
 
 int ControllerZaber::connect(){
+    if(m_is_connected) return 0;
+
     printf("%s:connecting to device %s\n", __FUNCTION__, dn.c_str());
 
     if( check(za_connect(&port, dn.c_str())) ) {
         printf("%s connected\n", dn.c_str());
         status = 0;
+        m_is_connected = true;
     } else {
         printf("%s not connected\n", dn.c_str());
         status = 1;

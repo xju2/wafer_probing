@@ -6,11 +6,8 @@
 ControllerBase::ControllerBase()
 {
     status = -1;
+    m_is_connected = false;
 }
 
 ControllerBase::~ControllerBase(){
-}
-
-int ControllerBase::get_status(){
-    return status;
 }

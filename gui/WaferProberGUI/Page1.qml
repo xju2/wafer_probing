@@ -97,6 +97,7 @@ Page1Form {
     }
     property var valRough: 0
     sb_rough.onValueChanged: {
+        busyID.running = true
         if(sb_rough.value > valRough){
             backend.rel_z =  0.600
         } else {
@@ -104,10 +105,12 @@ Page1Form {
         }
         valRough = sb_rough.value
         txt_z_pos.text = Number(backend.getPosZ).toLocaleString()
+        busyID.running = false
     }
 
     property var  valPrecision: 0
     sb_precision.onValueChanged: {
+        busyID.running = true
         if(sb_precision.value > valPrecision){
             backend.rel_z = 0.060
         } else{
@@ -115,6 +118,7 @@ Page1Form {
         }
         valPrecision = sb_precision.value
         txt_z_pos.text = Number(backend.getPosZ).toLocaleString()
+        busyID.running = false
     }
 
     btn_go_top.onClicked: {
@@ -128,6 +132,10 @@ Page1Form {
     btn_go_mid.onClicked: {
         backend.zMid
         txt_z_pos.text = Number(backend.getPosZ).toLocaleString()
+    }
+
+    btn_stop.onClicked: {
+        busyID.running = true
     }
 
 }
