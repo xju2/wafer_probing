@@ -16,6 +16,7 @@ protected:
 
 public:
     float m_position[3];
+    // float m_speed[3];
 
 public:
     ControllerBase();
@@ -35,6 +36,7 @@ public:
     virtual int mv_rel(int axis, float value) = 0; // move w.r.t current-position
 
     virtual int get_position() = 0;
+    // virtual int get_speed() = 0;
 
     virtual int set_home() = 0;
     virtual int set_center() = 0;

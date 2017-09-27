@@ -17,9 +17,6 @@ private:
     z_port port; //port connected to Zaber
     string dn; // device name
 
-public:
-    float m_position[2]; // make it public, easy to access.
-
 public: // implement controller's interface
     ControllerZaber(const char* device_name);
     ~ControllerZaber();
@@ -38,6 +35,7 @@ public: // implement controller's interface
 
     // get current position
     int get_position();
+    int get_speed();
 
     int set_home();
     int set_center();

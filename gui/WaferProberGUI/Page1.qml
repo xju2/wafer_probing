@@ -12,13 +12,17 @@ Page1Form {
         } else{
             output.append("Z station failed connection. check Ethernet.")
         }
+        // get current position
         txt_x_pos.text = backend.getPosX
         txt_y_pos.text = backend.getPosY
         txt_z_pos.text = Number(backend.getPosZ).toLocaleString()
 
         tx_abs_x.text = txt_x_pos.text
         tx_abs_y.text = txt_y_pos.text
-
+        // set speed in xyz to default value
+        backend.speedX = txt_speed_x.text.toString()
+        backend.speedY = txt_speed_y.text.toString()
+        backend.speedZ = txt_speed_z.text.toString()
     }
 
     dismiss.onClicked:{
@@ -61,14 +65,17 @@ Page1Form {
     // setup speed..
     btn_speed_x.onClicked: {
         backend.speedX = txt_speed_x.text.toString()
+        output.append("speed in X is set to:" + txt_speed_x.text.toString())
     }
 
     btn_speed_y.onClicked: {
         backend.speedY = txt_speed_y.text.toString()
+        output.append("speed in Y is set to:" + txt_speed_y.text.toString())
     }
 
     btn_speed_z.onClicked: {
         backend.speedZ = txt_speed_z.text.toString()
+        output.append("speed in Z is set to:" + txt_speed_z.text.toString())
     }
 
     // z-axis, move contact and separate.
@@ -97,7 +104,6 @@ Page1Form {
     }
     property var valRough: 0
     sb_rough.onValueChanged: {
-        busyID.running = true
         if(sb_rough.value > valRough){
             backend.rel_z =  0.600
         } else {
@@ -105,12 +111,10 @@ Page1Form {
         }
         valRough = sb_rough.value
         txt_z_pos.text = Number(backend.getPosZ).toLocaleString()
-        busyID.running = false
     }
 
     property var  valPrecision: 0
     sb_precision.onValueChanged: {
-        busyID.running = true
         if(sb_precision.value > valPrecision){
             backend.rel_z = 0.060
         } else{
@@ -118,20 +122,22 @@ Page1Form {
         }
         valPrecision = sb_precision.value
         txt_z_pos.text = Number(backend.getPosZ).toLocaleString()
-        busyID.running = false
     }
 
     btn_go_top.onClicked: {
         backend.zTop
         txt_z_pos.text = Number(backend.getPosZ).toLocaleString()
+        output.append("at the Top of Z-axis.")
     }
     btn_go_bottom.onClicked: {
         backend.zBottom
         txt_z_pos.text = Number(backend.getPosZ).toLocaleString()
+        output.append("at the Bottom of Z-axis.")
     }
     btn_go_mid.onClicked: {
         backend.zMid
         txt_z_pos.text = Number(backend.getPosZ).toLocaleString()
+        output.append("at the Middle of Z-axis.")
     }
 
     btn_stop.onClicked: {

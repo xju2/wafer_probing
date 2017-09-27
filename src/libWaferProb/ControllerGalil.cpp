@@ -100,6 +100,7 @@ int ControllerGalil::get_position(){
     return 0;
 }
 
+
 int ControllerGalil::set_home(){
     return 0;
 }

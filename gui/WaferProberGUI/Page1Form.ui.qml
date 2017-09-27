@@ -84,7 +84,7 @@ Item {
         y: 398
         width: 51
         height: 20
-        color: "#25a341"
+        color: "#000000"
         text: qsTr("5")
         horizontalAlignment: Text.AlignHCenter
         transformOrigin: Item.Center
@@ -108,7 +108,7 @@ Item {
         y: 438
         width: 51
         height: 20
-        text: qsTr("5")
+        text: qsTr("0.06")
         horizontalAlignment: Text.AlignHCenter
         font.pixelSize: 12
     }

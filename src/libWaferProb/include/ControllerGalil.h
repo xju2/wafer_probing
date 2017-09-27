@@ -26,9 +26,6 @@ private:
     string dn; // device name
 
 public:
-    float m_position[3]; // position
-
-public:
     ControllerGalil(const char* device_name);
     ~ControllerGalil();
 
@@ -43,6 +40,7 @@ public:
     int mv_rel(int axis, float value);
 
     int get_position();
+    int get_speed();
 
     int set_home();
     int set_center();
