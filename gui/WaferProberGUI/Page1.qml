@@ -2,11 +2,15 @@ import QtQuick 2.7
 
 Page1Form {
 
+    property var connectRes: -999
     connect.onClicked: {
-        if(backend.to_connect == 0){
+        connectRes = backend.to_connect
+        if(connectRes == 0){
             output.append("connection is established.")
+        } else if(connectRes == -1){
+            output.append("XY station failed connection.")
         } else{
-            output.append("connection failed.")
+            output.append("Z station failed connection. check Ethernet.")
         }
         txt_x_pos.text = backend.getPosX
         txt_y_pos.text = backend.getPosY
@@ -91,22 +95,25 @@ Page1Form {
         backend.zSep = txt_sep_input.text.toString()
         output.append("Separation is set to"+txt_sep_input.text)
     }
+    property var valRough: 0
+    sb_rough.onValueChanged: {
+        if(sb_rough.value > valRough){
+            backend.rel_z =  0.600
+        } else {
+            backend.rel_z = -0.600
+        }
+        valRough = sb_rough.value
+        txt_z_pos.text = Number(backend.getPosZ).toLocaleString()
+    }
 
-    sb_rough.down.onPressedChanged: {
-        backend.rel_z =  -0.600
-        txt_z_pos.text = Number(backend.getPosZ).toLocaleString()
-    }
-    sb_rough.up.onPressedChanged: {
-        backend.rel_z = 0.600
-        txt_z_pos.text = Number(backend.getPosZ).toLocaleString()
-    }
-
-    sb_precision.down.onPressedChanged: {
-        backend.rel_z = -0.060
-        txt_z_pos.text = Number(backend.getPosZ).toLocaleString()
-    }
-    sb_precision.up.onPressedChanged: {
-        backend.rel_z = 0.060
+    property var  valPrecision: 0
+    sb_precision.onValueChanged: {
+        if(sb_precision.value > valPrecision){
+            backend.rel_z = 0.060
+        } else{
+            backend.rel_z = -0.060
+        }
+        valPrecision = sb_precision.value
         txt_z_pos.text = Number(backend.getPosZ).toLocaleString()
     }
 

@@ -72,7 +72,7 @@ void BackEnd::setRel_z(float z){
     // z is in unit of mm.
     if(is_valid_z(z + m_current_z)){
         m_rel_z = z;
-        m_ctrl->mv_rel(2, m_rel_z*unit);
+        m_ctrl->mv_rel(2, m_rel_z);
         m_ctrl->get_pos_z();
         m_current_z = m_ctrl->m_position[2];
     }

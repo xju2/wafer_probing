@@ -422,7 +422,7 @@ Item {
         from: -10
         spacing: 0
         to: 10
-        value: 1
+        value: 0
     }
 
     Label {
