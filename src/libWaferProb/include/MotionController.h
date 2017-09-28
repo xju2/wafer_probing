@@ -42,7 +42,7 @@ public:
     int set_home();
     int set_center();
 
-    int write(const string& cmd){
+    int write(const string&){
         // sorry I don't know which device cmd writes to...
         return 0;
     }

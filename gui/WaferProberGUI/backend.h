@@ -54,6 +54,8 @@ class BackEnd : public QObject
     // STOP
     Q_PROPERTY(bool stop READ stop)
 
+    // Test X or Y
+    Q_PROPERTY(int testXY WRITE setTestXY)
 
 public:
     static BackendAttachedType *qmlAttachedProperties(QObject *object)
@@ -139,6 +141,8 @@ public:
         m_ctrl->stop();
         return true;
     }
+
+    void setTestXY(float axis);
 
 signals:
     void deviceConnected();

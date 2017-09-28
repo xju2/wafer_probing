@@ -213,4 +213,13 @@ Page1Form {
         fill_xy_pos()
         fill_z_pos()
     }
+
+    btn_test_x.onClicked: {
+        backend.testXY = 0
+        fill_xy_pos()
+    }
+    btn_test_y.onClicked: {
+        backend.testXY = 1
+        fill_xy_pos()
+    }
 }

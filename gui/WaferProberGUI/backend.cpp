@@ -33,9 +33,8 @@ void BackEnd::setAbs_x(float x){
     if(x != m_current_x && is_valid_x(x)){
         m_abs_x = x;
         m_ctrl->mv_abs(0, m_abs_x*unit);
-        emit posXChanged();
-
         get_pos_xy();
+        emit posXChanged();
     }
 }
 
@@ -43,8 +42,8 @@ void BackEnd::setAbs_y(float y){
     if(y != m_current_y && is_valid_y(y)){
         m_abs_y = y;
         m_ctrl->mv_abs(1, m_abs_y*unit);
-        emit posYChanged();
         get_pos_xy();
+        emit posYChanged();
     }
 }
 
@@ -52,8 +51,8 @@ void BackEnd::setRel_x(float x){
     if(is_valid_x(x+m_current_x)){
         m_rel_x = x;
         m_ctrl->mv_rel(0, m_rel_x*unit);
-        emit posXChanged();
         get_pos_xy();
+        emit posXChanged();
     }
 }
 
@@ -61,8 +60,8 @@ void BackEnd::setRel_y(float y){
     if(is_valid_y(y+m_current_y)){
         m_rel_y = y;
         m_ctrl->mv_rel(1, m_rel_y*unit);
-        emit posYChanged();
         get_pos_xy();
+        emit posYChanged();
     }
 }
 
@@ -159,5 +158,13 @@ void BackEnd::scanY(int times){
         QThread::sleep(3);
         m_ctrl->mv_abs(1, Y_MAX*unit);
         QThread::sleep(3);
+    }
+}
+
+void BackEnd::setTestXY(float axis){
+    vector<int> steps{20, 46, 73, 100, 126, 152, 179, 206, 226};
+    for(int step: steps){
+        m_ctrl->mv_abs(axis, unit*step);
+        QThread::sleep(6);
     }
 }

@@ -134,6 +134,5 @@ void ControllerGalil::make_a_move(int axis){
 
     write(mv);
     // block until motion is complete.
-    // don't block, allow a instance of stop
-    // GMotionComplete(port, string(1, axis_name).c_str());
+    GMotionComplete(port, string(1, axis_name).c_str());
 }

@@ -40,6 +40,8 @@ Item {
     property alias btn_scan_y: btn_scan_y
     property alias busyID: busyID
     property alias btn_pos: btn_pos
+    property alias btn_test_x: btn_test_x
+    property alias btn_test_y: btn_test_y
     rotation: 0
 
     Button {
@@ -90,6 +92,8 @@ Item {
         horizontalAlignment: Text.AlignHCenter
         transformOrigin: Item.Center
         font.pixelSize: 12
+
+        KeyNavigation.tab: txt_speed_y
     }
 
     TextInput {
@@ -101,6 +105,8 @@ Item {
         text: qsTr("5")
         horizontalAlignment: Text.AlignHCenter
         font.pixelSize: 12
+
+        KeyNavigation.tab: txt_speed_z
     }
 
     TextInput {
@@ -112,6 +118,8 @@ Item {
         text: qsTr("0.06")
         horizontalAlignment: Text.AlignHCenter
         font.pixelSize: 12
+
+        KeyNavigation.tab: btn_speed_x
     }
 
     Button {
@@ -227,6 +235,8 @@ Item {
         selectionColor: "#008033"
         font.pixelSize: 12
         horizontalAlignment: Text.AlignHCenter
+
+        KeyNavigation.tab: tx_abs_y
     }
 
     TextInput {
@@ -238,6 +248,8 @@ Item {
         text: qsTr("0")
         font.pixelSize: 12
         horizontalAlignment: Text.AlignHCenter
+
+        KeyNavigation.tab: btn_mv_abs
     }
 
     TextInput {
@@ -249,6 +261,8 @@ Item {
         text: qsTr("0")
         font.pixelSize: 12
         horizontalAlignment: Text.AlignHCenter
+
+        KeyNavigation.tab: tx_rel_y
     }
 
     TextInput {
@@ -260,6 +274,8 @@ Item {
         text: qsTr("0")
         font.pixelSize: 12
         horizontalAlignment: Text.AlignHCenter
+
+        KeyNavigation.tab: btn_mv_rel
     }
 
     Label {
@@ -325,7 +341,7 @@ Item {
         y: 240
         width: 112
         height: 18
-        text: qsTr("set middle")
+        text: qsTr("go middle")
     }
 
     Flickable {
@@ -521,5 +537,23 @@ Item {
         height: 47
         running: false
         spacing: 3
+    }
+
+    Button {
+        id: btn_test_x
+        x: 196
+        y: 317
+        width: 112
+        height: 18
+        text: qsTr("test X")
+    }
+
+    Button {
+        id: btn_test_y
+        x: 196
+        y: 341
+        width: 112
+        height: 18
+        text: qsTr("test Y")
     }
 }

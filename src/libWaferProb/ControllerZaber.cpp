@@ -57,7 +57,7 @@ int ControllerZaber::write(const string& cmd)
     za_receive(port, reply, sizeof(reply));
     printf("%s -> %s\n", cmd.c_str(), reply);
 
-    // poll_until_idle();
+    poll_until_idle();
     return 0;
 }
 
