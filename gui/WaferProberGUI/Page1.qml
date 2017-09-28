@@ -3,6 +3,42 @@ import QtQuick 2.7
 Page1Form {
 
     property var connectRes: -999
+    // z-axis, move contact and separate.
+    property var isContact: false
+
+    function go_contact(){
+        isContact = true
+        backend.zContact = true
+        txt_zcontact.text = "in contact"
+        txt_zcontact.color = "red"
+        btn_mc_toggle.text = "mv separate"
+    }
+
+    function go_separate(){
+        isContact = false
+        backend.zContact = false
+        txt_zcontact.text = "in separate"
+        txt_zcontact.color = "green"
+        btn_mc_toggle.text = "mv contact"
+    }
+
+    function grey_xy_pos(){
+        txt_x_pos.color = "grey"
+        txt_y_pos.color = "grey"
+    }
+
+    function fill_xy_pos(){
+        txt_x_pos.text = Number(backend.getPosX).toLocaleString()
+        txt_y_pos.text = Number(backend.getPosY).toLocaleString()
+        txt_x_pos.color = "black"
+        txt_y_pos.color = "black"
+    }
+
+    function fill_z_pos(){
+        txt_z_pos.text = Number(backend.getPosZ).toLocaleString()
+        txt_z_pos.color = "black"
+    }
+
     connect.onClicked: {
         connectRes = backend.to_connect
         if(connectRes == 0){
@@ -13,8 +49,7 @@ Page1Form {
             output.append("Z station failed connection. check Ethernet.")
         }
         // get current position
-        txt_x_pos.text = backend.getPosX
-        txt_y_pos.text = backend.getPosY
+        fill_xy_pos()
         txt_z_pos.text = Number(backend.getPosZ).toLocaleString()
 
         tx_abs_x.text = txt_x_pos.text
@@ -26,6 +61,10 @@ Page1Form {
     }
 
     dismiss.onClicked:{
+        if(isContact){
+            go_separate()
+        }
+
         if(backend.dismiss){
             output.append("connection is dismissed")
         }
@@ -33,33 +72,44 @@ Page1Form {
 
     // move x-y stations
     btn_mv_abs.onClicked: {
-
+        if(isContact){
+            go_separate()
+        }
+        grey_xy_pos()
         backend.abs_x = tx_abs_x.text.toString()
         backend.abs_y = tx_abs_y.text.toString()
-
-        txt_x_pos.text = backend.getPosX
-        txt_y_pos.text = backend.getPosY
-
+        fill_xy_pos()
     }
 
     btn_mv_rel.onClicked: {
+        if(isContact){
+            go_separate()
+        }
+
+        grey_xy_pos()
         backend.rel_x = tx_rel_x.text.toString()
         backend.rel_y = tx_rel_y.text.toString()
-
-        txt_x_pos.text = backend.getPosX
-        txt_y_pos.text = backend.getPosY
+        fill_xy_pos()
     }
 
     btn_sh.onClicked: {
+        if(isContact){
+            go_separate()
+        }
+
+        grey_xy_pos()
         backend.runSH
-        txt_x_pos.text = backend.getPosX
-        txt_y_pos.text = backend.getPosY
+        fill_xy_pos()
     }
 
     btn_sm.onClicked: {
+        if(isContact){
+            go_separate()
+        }
+
+        grey_xy_pos()
         backend.runSM
-        txt_x_pos.text = backend.getPosX
-        txt_y_pos.text = backend.getPosY
+        fill_xy_pos()
     }
 
     // setup speed..
@@ -78,24 +128,15 @@ Page1Form {
         output.append("speed in Z is set to:" + txt_speed_z.text.toString())
     }
 
-    // z-axis, move contact and separate.
-    property var isContact: false
+
     btn_mc_toggle.onClicked: {
         if(! isContact && ! backend.zContact) {
-            isContact = true
-            backend.zContact = true
-            txt_zcontact.text = "in contact"
-            txt_zcontact.color = "red"
-            btn_mc_toggle.text = "mv separate"
+            go_contact()
         } else if(isContact  && backend.zContact){
-            isContact = false
-            backend.zContact = false
-            txt_zcontact.text = "in separate"
-            txt_zcontact.color = "green"
-            btn_mc_toggle.text = "mv contact"
+            go_separate()
         }
         // update location
-        txt_z_pos.text = Number(backend.getPosZ).toLocaleString()
+        fill_z_pos()
     }
 
     btn_set_sep.onClicked: {
@@ -110,7 +151,7 @@ Page1Form {
             backend.rel_z = -0.600
         }
         valRough = sb_rough.value
-        txt_z_pos.text = Number(backend.getPosZ).toLocaleString()
+        fill_z_pos()
     }
 
     property var  valPrecision: 0
@@ -121,27 +162,55 @@ Page1Form {
             backend.rel_z = -0.060
         }
         valPrecision = sb_precision.value
-        txt_z_pos.text = Number(backend.getPosZ).toLocaleString()
+        fill_z_pos()
     }
 
     btn_go_top.onClicked: {
-        backend.zTop
-        txt_z_pos.text = Number(backend.getPosZ).toLocaleString()
-        output.append("at the Top of Z-axis.")
+        if(!isContact){
+            txt_z_pos.color = "grey"
+            backend.zTop
+            fill_z_pos()
+            output.append("at the Top of Z-axis.")
+        }
     }
     btn_go_bottom.onClicked: {
+        txt_z_pos.color = "grey"
         backend.zBottom
-        txt_z_pos.text = Number(backend.getPosZ).toLocaleString()
+        fill_z_pos()
         output.append("at the Bottom of Z-axis.")
     }
     btn_go_mid.onClicked: {
+        txt_z_pos.color = "grey"
         backend.zMid
-        txt_z_pos.text = Number(backend.getPosZ).toLocaleString()
+        fill_z_pos()
         output.append("at the Middle of Z-axis.")
     }
 
-    btn_stop.onClicked: {
-        busyID.running = true
+    btn_scan_x.onClicked: {
+        output.append("scanning X")
+        if(isContact)
+            go_separate()
+
+        txt_x_pos.color = "grey"
+        backend.scanX = 1
+        fill_xy_pos()
     }
 
+    btn_scan_y.onClicked: {
+        output.append("scanning Y")
+        if(isContact)
+            go_separate()
+
+        txt_y_pos.color = "grey"
+        backend.scanY = 1
+        fill_xy_pos()
+    }
+    btn_stop.onClicked: {
+        // output.append("stoping all motions")
+        backend.stop
+        backend.stop
+        backend.getPosXY
+        fill_xy_pos()
+        fill_z_pos()
+    }
 }

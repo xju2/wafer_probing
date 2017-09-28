@@ -1,6 +1,7 @@
 #include "backend.h"
 #include <QDebug>
 #include "Helper.h"
+#include <QThread> // for sleep function.
 
 BackEnd::BackEnd(QObject *parent) : QObject(parent)
 {
@@ -9,7 +10,7 @@ BackEnd::BackEnd(QObject *parent) : QObject(parent)
 
     m_current_x = m_current_y = m_current_z = -1.0;
     unit = 1000;
-    m_z_sep = 700; // micrometer
+    m_z_sep = 0.700; // unit of mm.
     m_z_isContact = false;
 }
 
@@ -24,9 +25,6 @@ int BackEnd::connectDevice()
 }
 
 bool BackEnd::dismiss(){
-    if(m_z_isContact){
-        m_ctrl->mv_rel(2, -1*m_z_sep);
-    }
     m_ctrl->disconnect();
     return true;
 }
@@ -138,4 +136,28 @@ bool BackEnd::zMid(){
     m_ctrl->get_pos_z();
     m_current_z = m_ctrl->m_position[2];
     return true;
+}
+
+void BackEnd::scanX(int times){
+    if(times < 0) { times = 1; }
+    m_scan_x = times;
+
+    for(int i = 0; i < times; i++){
+        m_ctrl->mv_abs(0, 0);
+        QThread::sleep(3);
+        m_ctrl->mv_abs(0, X_MAX*unit);
+        QThread::sleep(3);
+    }
+}
+
+void BackEnd::scanY(int times){
+    if(times < 0) { times = 1; }
+    m_scan_y = times;
+
+    for(int i = 0; i < times; i++){
+        m_ctrl->mv_abs(1, 0);
+        QThread::sleep(3);
+        m_ctrl->mv_abs(1, Y_MAX*unit);
+        QThread::sleep(3);
+    }
 }

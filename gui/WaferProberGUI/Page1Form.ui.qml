@@ -39,6 +39,7 @@ Item {
     property alias btn_scan_x: btn_scan_x
     property alias btn_scan_y: btn_scan_y
     property alias busyID: busyID
+    property alias btn_pos: btn_pos
     rotation: 0
 
     Button {
@@ -160,7 +161,7 @@ Item {
     }
 
     Label {
-        id: label
+        id: btn_pos
         x: 56
         y: 190
         width: 113
@@ -287,6 +288,7 @@ Item {
         y: 216
         width: 114
         height: 29
+        color: "green"
         text: qsTr("in separate")
         verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignHCenter
@@ -332,6 +334,7 @@ Item {
         y: 388
         width: 395
         height: 75
+        boundsBehavior: Flickable.DragAndOvershootBounds
         flickableDirection: Flickable.VerticalFlick
 
         TextArea.flickable: TextArea {
@@ -340,8 +343,9 @@ Item {
             y: 0
             width: 393
             height: 72
-            wrapMode: TextArea.Wrap
+            wrapMode: Text.WordWrap
             text: "Program started..."
+            verticalAlignment: Text.AlignBottom
             opacity: 0.8
             color: "steelblue"
         }

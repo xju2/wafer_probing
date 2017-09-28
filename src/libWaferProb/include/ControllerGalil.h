@@ -38,6 +38,7 @@ public:
 
     int mv_abs(int axis, float value);
     int mv_rel(int axis, float value);
+    int stop();
 
     int get_position();
     int get_speed();

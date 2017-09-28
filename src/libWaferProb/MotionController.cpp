@@ -72,6 +72,12 @@ int MotionController::mv_rel(int axis, float value) {
     return 0;
 }
 
+int MotionController::stop(){
+    xy_ctrl->stop();
+    z_ctrl->stop();
+    return 0;
+}
+
 int MotionController::get_position(){
     get_pos_xy();
     get_pos_z();

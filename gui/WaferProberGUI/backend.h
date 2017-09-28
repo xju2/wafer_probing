@@ -33,6 +33,7 @@ class BackEnd : public QObject
     Q_PROPERTY(float getPosX READ getPosX NOTIFY posXGot)
     Q_PROPERTY(float getPosY READ getPosY NOTIFY posYGot)
     Q_PROPERTY(float getPosZ READ getPosZ NOTIFY posZGot)
+    Q_PROPERTY(bool getPosXY READ getPosXY)
 
     // set speed
     Q_PROPERTY(float speedX READ getSpeedX WRITE setSpeedX NOTIFY speedXSet)
@@ -45,6 +46,14 @@ class BackEnd : public QObject
     Q_PROPERTY(bool zTop READ zTop)
     Q_PROPERTY(bool zBottom READ zBottom)
     Q_PROPERTY(bool zMid READ zMid)
+
+    // scan X and Y
+    Q_PROPERTY(int scanX READ readScanX WRITE scanX)
+    Q_PROPERTY(int scanY READ readScanX WRITE scanY)
+
+    // STOP
+    Q_PROPERTY(bool stop READ stop)
+
 
 public:
     static BackendAttachedType *qmlAttachedProperties(QObject *object)
@@ -75,6 +84,7 @@ public:
 
     bool runSH();
     bool runSM();
+    bool getPosXY(){ get_pos_xy(); return true;}
     float getPosX(){ return m_current_x; emit posXGot(); }
     float getPosY(){ return m_current_y; emit posYGot(); }
     float getPosZ(){
@@ -118,7 +128,17 @@ public:
     bool zBottom();
     bool zMid();
 
+    // scan X and Y direction
+    void scanX(int times);
+    void scanY(int times);
+    int readScanX(){ return m_scan_x; }
+    int readScanY(){ return m_scan_y; }
 
+    // stop motions
+    bool stop(){
+        m_ctrl->stop();
+        return true;
+    }
 
 signals:
     void deviceConnected();
@@ -168,8 +188,10 @@ private:
     float m_speed_y;
     float m_speed_z;
 
-
     int unit;
+
+    int m_scan_x;
+    int m_scan_y;
 
 private: // private functions
     bool is_valid_x(float x){

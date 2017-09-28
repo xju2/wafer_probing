@@ -35,6 +35,8 @@ public:
     virtual int mv_abs(int axis, float value) = 0; // move w.r.t home-position
     virtual int mv_rel(int axis, float value) = 0; // move w.r.t current-position
 
+    virtual int stop() = 0; // stop motion immediately
+
     virtual int get_position() = 0;
     // virtual int get_speed() = 0;
 

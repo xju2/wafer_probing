@@ -57,6 +57,12 @@ int ControllerGalil::write(const string& cmd){
     return 0;
 }
 
+int ControllerGalil::stop(){
+    int status = write("ST");
+    get_position();
+    return status;
+}
+
 int ControllerGalil::set_speed(int axis, float sp)
 {
     int steps = convert_mm_to_turns(sp);
@@ -128,5 +134,6 @@ void ControllerGalil::make_a_move(int axis){
 
     write(mv);
     // block until motion is complete.
-    GMotionComplete(port, string(1, axis_name).c_str());
+    // don't block, allow a instance of stop
+    // GMotionComplete(port, string(1, axis_name).c_str());
 }

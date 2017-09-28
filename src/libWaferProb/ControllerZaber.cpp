@@ -57,7 +57,7 @@ int ControllerZaber::write(const string& cmd)
     za_receive(port, reply, sizeof(reply));
     printf("%s -> %s\n", cmd.c_str(), reply);
 
-    poll_until_idle();
+    // poll_until_idle();
     return 0;
 }
 
@@ -106,10 +106,10 @@ int ControllerZaber::get_position()
     }
     char cmd[256];
     int n = sprintf(cmd, "/1 get pos\n");
-    
+
     string* rpy = write_with_reply(cmd) ;
     if(rpy == NULL) return 2;
-   
+
     // analyze the reply.
 	struct za_reply decoded_reply;
     za_decode(&decoded_reply, const_cast<char*>(rpy->c_str()));
@@ -121,7 +121,7 @@ int ControllerZaber::get_position()
         vector<string> raw_items;
         WaferProb::tokenizeString(data, ' ', raw_items);
         for(int i = 0; i < (int) raw_items.size(); i++){
-            m_position[i] = convert_turns_to_mm(atof(raw_items.at(i).c_str()));
+            m_position[i] = (int)(convert_turns_to_mm(atof(raw_items.at(i).c_str()))*100) / 100.;
         }
     }
     return 0;
@@ -150,6 +150,12 @@ int ControllerZaber::unpark()
     if(status == 0){
         printf("%s is unparked\n", dn.c_str());
     }
+    return status;
+}
+
+int ControllerZaber::stop(){
+    int status = write("/stop\n");
+    get_position();
     return status;
 }
 
