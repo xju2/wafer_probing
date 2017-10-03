@@ -67,12 +67,19 @@ void BackEnd::setRel_y(float y){
 
 void BackEnd::setRel_z(float z){
     // z is in unit of mm.
-    if(is_valid_z(z + m_current_z)){
-        m_rel_z = z;
+    m_rel_z = z;
+    /**
+    float abs_z = z + m_current_z;
+    if(abs_z > Z_MAX){
+        printf("will only go to maximum\n");
+        m_ctrl->mv_abs(2, Z_MAX);
+    } else {
         m_ctrl->mv_rel(2, m_rel_z);
-        m_ctrl->get_pos_z();
-        m_current_z = m_ctrl->m_position[2];
     }
+    **/
+    m_ctrl->mv_rel(2, m_rel_z);
+    m_ctrl->get_pos_z();
+    m_current_z = m_ctrl->m_position[2];
 }
 
 bool BackEnd::runSH(){
@@ -112,12 +119,13 @@ void BackEnd::setSpeedY(float speed_y){
 
 void BackEnd::setSpeedZ(float speed_z){
     m_speed_z = speed_z;
-    m_ctrl->set_speed(2, m_speed_z*unit);
+    m_ctrl->set_speed(2, m_speed_z);
     emit speedZSet();
 }
 
 bool BackEnd::zTop(){
-    m_ctrl->mv_abs(2, 14.189);
+    // m_ctrl->mv_abs(2, 14.189);
+    m_ctrl->mv_abs(2, Z_MAX);
     m_ctrl->get_pos_z();
     m_current_z = m_ctrl->m_position[2];
     return true;

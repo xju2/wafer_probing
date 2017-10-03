@@ -45,15 +45,26 @@ public:
 
     int set_home();
     int set_center();
+
+    void find_max_min();
+private:
+    // 14.2 mili-meter is the total distance the Z-axis can travel.
+    // project the absolute turns (or position) to the 14.2 mm length
+    // lowest position would be zero, while highest position is 14.2 mm.
+    float m_raw_position[3];
+    float m_ymax; // turns at the top, --> 14.2mm
+    float m_ymin; // turns at the bottom, --> 0
 private:
     inline bool check(GReturn rc){
         return (rc == G_NO_ERROR);
     }
-    int convert_mm_to_turns(float value){
-        return value*1112679/14.189;
+    int convert_mm_to_turns(float value)
+    {
+        // value is the relative distance.
+        return value* (m_ymax - m_ymin)/14.2;
     }
     float convert_turns_to_mm(float turns){
-        float res = 14.189/1112679 * turns + 12.7315;
+        float res = 14.2*(turns - m_ymin)/(m_ymax - m_ymin);
         res = (int)(res*100) / 100.;
         return res;
     }

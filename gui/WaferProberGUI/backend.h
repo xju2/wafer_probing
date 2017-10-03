@@ -57,6 +57,9 @@ class BackEnd : public QObject
     // Test X or Y
     Q_PROPERTY(int testXY WRITE setTestXY)
 
+    // calibrate Z-axis
+    Q_PROPERTY(bool calibrateZ READ calibrateZ)
+
 public:
     static BackendAttachedType *qmlAttachedProperties(QObject *object)
     {
@@ -143,6 +146,11 @@ public:
     }
 
     void setTestXY(float axis);
+
+    bool calibrateZ(){
+        m_ctrl->calibrate_Z();
+        return true;
+    }
 
 signals:
     void deviceConnected();

@@ -42,6 +42,7 @@ Item {
     property alias btn_pos: btn_pos
     property alias btn_test_x: btn_test_x
     property alias btn_test_y: btn_test_y
+    property alias btn_calibrate: btn_calibrate
     rotation: 0
 
     Button {
@@ -88,7 +89,7 @@ Item {
         width: 51
         height: 20
         color: "#000000"
-        text: qsTr("5")
+        text: qsTr("10")
         horizontalAlignment: Text.AlignHCenter
         transformOrigin: Item.Center
         font.pixelSize: 12
@@ -102,7 +103,7 @@ Item {
         y: 418
         width: 51
         height: 20
-        text: qsTr("5")
+        text: qsTr("10")
         horizontalAlignment: Text.AlignHCenter
         font.pixelSize: 12
 
@@ -115,7 +116,7 @@ Item {
         y: 438
         width: 51
         height: 20
-        text: qsTr("0.06")
+        text: qsTr("0.6")
         horizontalAlignment: Text.AlignHCenter
         font.pixelSize: 12
 
@@ -443,9 +444,9 @@ Item {
         y: 134
         width: 140
         height: 21
-        from: -10
+        from: -100
         spacing: 0
-        to: 10
+        to: 100
         value: 0
     }
 
@@ -454,7 +455,7 @@ Item {
         x: 471
         y: 133
         height: 18
-        text: qsTr("600 micrometer/step")
+        text: qsTr("100 micrometer/step")
     }
 
     Label {
@@ -462,7 +463,7 @@ Item {
         x: 477
         y: 163
         height: 18
-        text: qsTr("60 micrometer/step")
+        text: qsTr("10 micrometer/step")
     }
 
     SpinBox {
@@ -555,5 +556,14 @@ Item {
         width: 112
         height: 18
         text: qsTr("test Y")
+    }
+
+    Button {
+        id: btn_calibrate
+        x: 339
+        y: 341
+        width: 114
+        height: 18
+        text: qsTr("Calibrate-Z")
     }
 }

@@ -12,6 +12,9 @@ ControllerGalil::ControllerGalil(const char* device_name){
     dn = string(device);
     port = 0;
     m_position[0] = m_position[1] = m_position[2] = DEFAULT_GALIL_POS;
+    m_raw_position[0] = m_raw_position[1] = m_raw_position[2] = DEFAULT_GALIL_POS;
+    m_ymax = 765253;
+    m_ymin = -364475;
 }
 
 ControllerGalil::~ControllerGalil(){
@@ -53,7 +56,7 @@ int ControllerGalil::write(const string& cmd){
         printf("%s is not recognised\n", cmd.c_str());
         return -2;
     }
-    printf("Galil: %s --> %s\n", cmd.c_str(), trimmed);
+    printf("Galil: %s --> %s\n", cmd.c_str(), buf);
     return 0;
 }
 
@@ -67,14 +70,13 @@ int ControllerGalil::set_speed(int axis, float sp)
 {
     int steps = convert_mm_to_turns(sp);
 
-    char cmd[256];
-    sprintf(cmd, "SP %d", steps);
+    string cmd = generate_cmd("SP", axis, steps);
     return write(cmd);
 }
 
 int ControllerGalil::mv_abs(int axis, float value){
     int steps = convert_mm_to_turns(value - m_position[axis]);
-    string cmd = generate_cmd("PA", axis, steps);
+    string cmd = generate_cmd("PR", axis, steps);
     write(cmd);
     make_a_move(axis);
     return 0;
@@ -100,8 +102,11 @@ int ControllerGalil::get_position(){
 
     vector<string> raw_items;
     WaferProb::tokenizeString(data, ',', raw_items);
-    for(int i = 0; i < (int) raw_items.size(); i++){
-        m_position[i] = convert_turns_to_mm(atof(raw_items.at(i).c_str()));
+    for(int i = 0; i < 3; i++)
+    {
+        float raw_pos = atof(raw_items.at(i).c_str());
+        m_raw_position[i] = raw_pos;
+        m_position[i] = convert_turns_to_mm(raw_pos);
     }
     return 0;
 }
@@ -135,4 +140,24 @@ void ControllerGalil::make_a_move(int axis){
     write(mv);
     // block until motion is complete.
     GMotionComplete(port, string(1, axis_name).c_str());
+}
+
+void ControllerGalil::find_max_min()
+{
+    int axis = 2;
+    string cmd = generate_cmd("PA", axis, 1000000);
+    write(cmd);
+    make_a_move(axis);
+
+    get_position();
+    m_ymax = m_raw_position[2];
+    printf("HELLO: %.2f\n", m_ymax);
+
+    string cmd2 = generate_cmd("PA", axis, -1000000);
+    write(cmd2);
+    make_a_move(axis);
+    get_position();
+    m_ymin = m_raw_position[2];
+
+    printf("range of z-axis: [%.2f, %.2f]\n", m_ymin, m_ymax);
 }

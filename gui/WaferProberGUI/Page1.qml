@@ -146,9 +146,9 @@ Page1Form {
     property var valRough: 0
     sb_rough.onValueChanged: {
         if(sb_rough.value > valRough){
-            backend.rel_z =  0.600
+            backend.rel_z =  0.500
         } else {
-            backend.rel_z = -0.600
+            backend.rel_z = -0.500
         }
         valRough = sb_rough.value
         fill_z_pos()
@@ -157,14 +157,15 @@ Page1Form {
     property var  valPrecision: 0
     sb_precision.onValueChanged: {
         if(sb_precision.value > valPrecision){
-            backend.rel_z = 0.060
+            backend.rel_z = 0.010
         } else{
-            backend.rel_z = -0.060
+            backend.rel_z = -0.010
         }
         valPrecision = sb_precision.value
         fill_z_pos()
     }
 
+    // move Z-axis to the top.
     btn_go_top.onClicked: {
         if(!isContact){
             txt_z_pos.color = "grey"
@@ -221,5 +222,9 @@ Page1Form {
     btn_test_y.onClicked: {
         backend.testXY = 1
         fill_xy_pos()
+    }
+
+    btn_calibrate.onClicked: {
+        backend.calibrateZ
     }
 }
