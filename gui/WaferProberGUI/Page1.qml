@@ -129,6 +129,7 @@ Page1Form {
     }
 
 
+    // move contact or separate
     btn_mc_toggle.onClicked: {
         if(! isContact && ! backend.zContact) {
             go_contact()
