@@ -342,7 +342,7 @@ Item {
         y: 240
         width: 112
         height: 18
-        text: qsTr("go middle")
+        text: qsTr("go center")
     }
 
     Flickable {

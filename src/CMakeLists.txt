@@ -49,10 +49,13 @@ add_executable(${execname} tools/${srcfile})
 add_dependencies(${execname} WaferProb)
 set_target_properties(${execname} PROPERTIES LINKER_LANGUAGE CXX)
 
+# CV2
+find_package(OpenCV REQUIRED)
+
 if(APPLE)
-    target_link_libraries(${execname} WaferProb /Applications/gclib/dylib/gclib.0.dylib /Applications/gclib/dylib/gclibo.0.dylib)
+    target_link_libraries(${execname} WaferProb /Applications/gclib/dylib/gclib.0.dylib /Applications/gclib/dylib/gclibo.0.dylib ${OpenCV_LIBS})
 else()
-    target_link_libraries(${execname} WaferProb gclib gclibo)
+    target_link_libraries(${execname} WaferProb gclib gclibo ${OpenCV_LIBS})
 endif()
 
 endforeach()
